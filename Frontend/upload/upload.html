@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="../assets/folder.png" />
+		<link rel="stylesheet" href="../style.css" />
+		<title>FileStorageApp - Upload</title>
+	</head>
+	<body>
+		<div class="header">
+			<div class="img-container">
+				<img class="logo" src="../assets/folder.png" />
+			</div>
+			<h1 class="title">File Storage App</h1>
+		</div>
+		<div class="form-container">
+			<h2>Upload File</h2>
+			<form action="/upload" method="POST" enctype="multipart/form-data" id="upload-form">
+				<input type="file" name="file" />
+				<button type="upload">Upload</button>
+			</form>
+		</div>
+		<script src="../script.js"></script>
+		<script src="upload.js"></script>
+	</body>
+</html>
