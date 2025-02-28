@@ -3,7 +3,11 @@ function goBackToMain() {
 
 	imgContainer.addEventListener('click', (event) => {
 		event.preventDefault();
-		if (window.location.href == window.location.origin + '/Frontend/' || window.location.href.includes('login')) {
+		if (
+			window.location.href == window.location.origin + '/Frontend/' ||
+			window.location.href.includes('login') ||
+			window.location.href.includes('register')
+		) {
 			window.location.href = window.location.origin + '/Frontend/';
 		} else {
 			window.location.href = window.location.origin + '/Frontend/home/home.html?user=' + getUserParam();

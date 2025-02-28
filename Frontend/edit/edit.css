@@ -1,0 +1,22 @@
+#update_permission_tier {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#permission-input {
+	text-align: center;
+	width: 50%;
+}
+
+.fake-container {
+	width: 500px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#delete-btn {
+	background-color: #d92616;
+}

@@ -12,7 +12,12 @@ function uploadFormEventHandler() {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data);
+				if (data.STATUS == 'SUCCESS') {
+					const userParam = 'user=' + getUserParam();
+					window.location.href = '../home/home.html?' + userParam;
+				} else {
+					console.log(data);
+				}
 			});
 	});
 }

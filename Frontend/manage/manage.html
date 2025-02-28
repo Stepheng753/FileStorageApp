@@ -5,7 +5,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" href="../assets/folder.svg" />
 		<link rel="stylesheet" href="../style.css" />
-		<title>FileStorageApp - Login</title>
+		<link rel="stylesheet" href="manage.css" />
+		<title>FileStorageApp - Manage Users</title>
 	</head>
 	<body>
 		<div class="header">
@@ -15,14 +16,20 @@
 			<h1 class="title">File Storage App</h1>
 		</div>
 		<div class="container">
-			<h2>Login</h2>
-			<form action="/login" method="POST" id="login-form">
-				<input type="text" name="username" placeholder="Username" required />
-				<input type="password" name="password" placeholder="Password" required />
-				<button type="login">Login</button>
-			</form>
+			<h2>Manage Users</h2>
+			<div class="user-list">
+				<!-- Template for user list -->
+				<div class="user-item">
+					<div class="user-info">
+						<span class="username">Username</span>
+						<span class="password">Password</span>
+						<span class="permission-tier">Permission Tier</span>
+					</div>
+					<div class="edit-btn"></div>
+				</div>
+			</div>
 		</div>
 		<script src="../script.js"></script>
-		<script src="login.js"></script>
+		<script src="manage.js"></script>
 	</body>
 </html>

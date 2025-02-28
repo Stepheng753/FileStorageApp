@@ -10,9 +10,9 @@ This is an app that will allow users to login, upload, and view specific files.
 
 -   Upload Page ✅
 
--   View Page ❌
+-   View Page ✅
 
--   Manage Users Page ❌
+-   Manage Users Page ✅
 
 ## Backend Components
 

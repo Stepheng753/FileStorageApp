@@ -17,3 +17,7 @@ def upload_file():
         return {'STATUS': 'SUCCESS'}
 
     return  {'STATUS': 'FAILURE'}
+
+
+def download_files():
+    return os.listdir('./files/')

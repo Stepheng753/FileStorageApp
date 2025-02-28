@@ -29,7 +29,7 @@ def create_users_database():
     return True
 
 
-def insert_user(username, password, permission_tier = 2):
+def insert_user_entry(username, password, permission_tier = 2):
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
@@ -50,7 +50,7 @@ def insert_user(username, password, permission_tier = 2):
     return True
 
 
-def get_user(username):
+def get_user_entry(username):
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
@@ -59,9 +59,10 @@ def get_user(username):
             FROM users
             WHERE username = ?
         ''', (username.upper(), ))
-        users = cursor.fetchall()
+        user = cursor.fetchone()
         conn.commit()
         conn.close()
+        print("USER SELECTED: SUCCESS")
 
     except sqlite3.Error as e:
         print(e)
@@ -69,10 +70,10 @@ def get_user(username):
         conn.close()
         return False
 
-    return users
+    return user
 
 
-def get_all_users():
+def get_all_users_entries():
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
@@ -83,17 +84,40 @@ def get_all_users():
         users = cursor.fetchall()
         conn.commit()
         conn.close()
+        print("USERS SELECTED: SUCCESS")
 
     except sqlite3.Error as e:
         print(e)
-        print("USER SELECTED: FAILURE")
+        print("USERS SELECTED: FAILURE")
         conn.close()
         return False
 
     return users
 
 
-def delete_all_users():
+def delete_user_entry(username):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute('''
+            DELETE
+            FROM users
+            WHERE username = ?
+        ''', (username.upper(), ))
+        conn.commit()
+        conn.close()
+        print("USER DELETED: SUCCESS")
+
+    except sqlite3.Error as e:
+        print(e)
+        print("USER DELETED: FAILURE")
+        conn.close()
+        return False
+
+    return True
+
+
+def delete_all_users_entries():
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
@@ -106,13 +130,52 @@ def delete_all_users():
 
     except sqlite3.Error as e:
         print(e)
-        print("USER DELETED: FAILURE")
+        print("USERS DELETED: FAILURE")
         conn.close()
         return False
 
     return True
 
 
-def test_insert_get_users():
-    insert_user("Test4", "Test2Pass", 2)
-    print(get_all_users())
+def update_user_entry_permission(username, permission_tier):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute('''
+            UPDATE users
+            SET permission_tier = ?
+            WHERE username = ?
+        ''', (permission_tier, username.upper()))
+        conn.commit()
+        conn.close()
+        print("USER UPDATED PERMISSION: SUCCESS")
+
+    except sqlite3.Error as e:
+        print(e)
+        print("USER UPDATED PERMISSION: FAILURE")
+        conn.close()
+        return False
+
+    return True
+
+
+def update_user_entry_password(username, password):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute('''
+            UPDATE users
+            SET password = ?
+            WHERE username = ?
+        ''', (password, username.upper()))
+        conn.commit()
+        conn.close()
+        print("USER UPDATED PASSWORD: SUCCESS")
+
+    except sqlite3.Error as e:
+        print(e)
+        print("USER UPDATED PASSWORD: FAILURE")
+        conn.close()
+        return False
+
+    return True

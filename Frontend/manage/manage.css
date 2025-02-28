@@ -1,0 +1,42 @@
+.container {
+	width: 600px;
+}
+
+.user-list {
+	width: 100%;
+	margin-top: 20px;
+}
+
+.user-item {
+	display: flex;
+	flex-direction: row;
+	padding: 10px;
+	margin-bottom: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+.user-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex: 10;
+	margin-right: 10px;
+}
+
+.username,
+.password {
+	flex: 2;
+	text-align: center;
+}
+
+.permission-tier {
+	flex: 1;
+	text-align: center;
+}
+
+.edit-btn {
+	flex: 1;
+	margin-bottom: 0;
+	padding: 10px;
+}

@@ -1,4 +1,3 @@
-/* Login Page */
 body {
 	background-color: #f0f0f0;
 	font-family: Arial, sans-serif;
@@ -35,7 +34,7 @@ body {
 	text-align: center;
 }
 
-.form-container {
+.container {
 	width: 500px;
 	margin-inline: 100px;
 	margin-bottom: 50px;
