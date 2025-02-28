@@ -1,6 +1,30 @@
 # FileStorageApp
 
-This is an app that will allow users to login, upload, view specific files.
+This is an app that will allow users to login, upload, and view specific files.
+
+## Frontend Components
+
+-   Register Page ✅
+
+-   Login Page ✅
+
+-   Upload Page ✅
+
+-   View Page ❌
+
+-   Manage Users Page ❌
+
+## Backend Components
+
+-   Users (Login / Register) ✅
+
+-   Upload (Save to "Files" Directory) ✅
+
+-   Files ✅
+
+-   Database (Create, Insert, Get, Delete) ✅
+
+-   Secure Authentication ❌
 
 ## Running BackEnd
 
