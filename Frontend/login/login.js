@@ -6,14 +6,18 @@ function loginFormEventHandler() {
 
 		const formData = new FormData(loginForm);
 
-		fetch('http://127.0.0.1:5000/get_user_pass', {
+		fetch('http://127.0.0.1:5000/login', {
 			method: 'POST',
 			body: formData,
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				const userParam = 'user=' + formData.get('username');
-				window.location.href = '../home/home.html?' + userParam;
+				if (data.STATUS == 'SUCCESS') {
+					const userParam = 'user=' + formData.get('username');
+					window.location.href = '../home/home.html?' + userParam;
+				} else {
+					console.log(data);
+				}
 			})
 			.catch((error) => console.log('Error: ', error));
 	});

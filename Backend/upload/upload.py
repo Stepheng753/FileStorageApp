@@ -14,6 +14,6 @@ def upload_file():
         filename = file.filename
         filepath = os.path.join('files/', filename)
         file.save(filepath)
-        return {'status': 'success'}
+        return {'STATUS': 'SUCCESS'}
 
-    return {'status': 'failure'}
+    return  {'STATUS': 'FAILURE'}

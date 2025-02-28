@@ -1,6 +1,5 @@
 function goBackToMain() {
 	const imgContainer = document.querySelector('.img-container');
-	console.log(imgContainer);
 
 	imgContainer.addEventListener('click', (event) => {
 		event.preventDefault();

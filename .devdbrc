@@ -1,0 +1,6 @@
+[
+  {
+    "type": "sqlite",
+    "path": "/home/stepheng753/Development/FileStorageApp/Backend/database/users.db"
+  }
+]
