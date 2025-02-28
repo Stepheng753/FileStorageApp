@@ -1,5 +1,4 @@
 from flask import request
-import sqlite3
 from main import *
 from database.create_test_db import get_user, insert_user
 

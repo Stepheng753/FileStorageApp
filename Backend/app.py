@@ -6,8 +6,6 @@ from main import *
 from users.users import *
 from upload.upload import *
 
-from database.create_test_db import delete_all_users
-
 app = Flask(__name__)
 CORS(app)
 

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sqlite3
-import os
 from main import *
 
 def create_users_database():
