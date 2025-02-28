@@ -5,8 +5,6 @@ function redirectButtonHandle(btnType) {
 
 		if (btnType == 'login') {
 			window.location.href = '../' + btnType + '/' + btnType + '.html';
-		} else if (btnType == 'view') {
-			window.location.href = window.location.origin + '/Backend/files/';
 		} else {
 			window.location.href = '../' + btnType + '/' + btnType + '.html?user=' + getUserParam();
 		}
