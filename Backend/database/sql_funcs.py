@@ -29,7 +29,7 @@ def create_users_database():
     return True
 
 
-def insert_user_entry(username, password, permission_tier = 2):
+def insert_user_entry(username, password, permission_tier = 3):
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()

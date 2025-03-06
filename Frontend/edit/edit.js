@@ -5,7 +5,7 @@ function changePassEventHandler() {
 		event.preventDefault();
 
 		const formData = new FormData(passwordForm);
-		formData.append('username', getUserParam());
+		formData.append('username', getParam('userTo'));
 
 		fetch('http://127.0.0.1:5000/update_password', {
 			method: 'POST',
@@ -14,7 +14,7 @@ function changePassEventHandler() {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.STATUS == 'SUCCESS') {
-					const userParam = 'user=' + formData.get('username');
+					const userParam = 'user=' + getParam('userFrom');
 					window.location.href = '../home/home.html?' + userParam;
 				} else {
 					console.log(data);
@@ -31,7 +31,7 @@ function changePermissionEventHandler() {
 		event.preventDefault();
 
 		const formData = new FormData(permissionForm);
-		formData.append('username', getUserParam());
+		formData.append('username', getParam('userTo'));
 
 		fetch('http://127.0.0.1:5000/update_permission_tier', {
 			method: 'POST',
@@ -40,7 +40,7 @@ function changePermissionEventHandler() {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.STATUS == 'SUCCESS') {
-					const userParam = 'user=' + formData.get('username');
+					const userParam = 'user=' + getParam('userFrom');
 					window.location.href = '../home/home.html?' + userParam;
 				} else {
 					console.log(data);
@@ -57,7 +57,7 @@ function deleteUser() {
 		event.preventDefault();
 
 		const formData = new FormData();
-		formData.append('username', getUserParam());
+		formData.append('username', getParam('userTo'));
 
 		fetch('http://127.0.0.1:5000/delete_user', {
 			method: 'POST',
@@ -66,12 +66,11 @@ function deleteUser() {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.STATUS == 'SUCCESS') {
-					const userParam = 'user=' + formData.get('username');
+					const userParam = 'user=' + getParam('userFrom');
 					window.location.href = '../home/home.html?' + userParam;
 				} else {
 					console.log(data);
 				}
-				console.log(data);
 			})
 			.catch((error) => console.log('Error: ', error));
 	});
@@ -79,7 +78,7 @@ function deleteUser() {
 
 function setDefaultPermissionVal() {
 	const formData = new FormData();
-	formData.append('username', getUserParam());
+	formData.append('username', getParam('userTo'));
 
 	fetch('http://127.0.0.1:5000/get_user', { method: 'POST', body: formData })
 		.then((res) => res.json())
@@ -94,8 +93,8 @@ function setDefaultPermissionVal() {
 function changeEditTitles() {
 	const editPassTitle = document.getElementById('pass-change-title');
 	const editPermissionTitle = document.getElementById('permission-change-title');
-	editPassTitle.innerText = 'Change Password for USER: ' + getUserParam();
-	editPermissionTitle.innerText = 'Change Permission for USER: ' + getUserParam();
+	editPassTitle.innerText = 'Change Password for USER: ' + getParam('userTo');
+	editPermissionTitle.innerText = 'Change Permission for USER: ' + getParam('userTo');
 }
 
 changePassEventHandler();
@@ -103,3 +102,4 @@ changePermissionEventHandler();
 deleteUser();
 setDefaultPermissionVal();
 changeEditTitles();
+goBackToMain('userFrom');

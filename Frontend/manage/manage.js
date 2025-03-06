@@ -51,8 +51,9 @@ function editButtonEventHandler(editButton, username) {
 	editButton.addEventListener('click', (event) => {
 		event.preventDefault();
 
-		const userParam = 'user=' + username;
-		window.location.href = '../edit/edit.html?' + userParam;
+		const userFromParam = 'userFrom=' + getParam();
+		const userToParam = 'userTo=' + username;
+		window.location.href = '../edit/edit.html?' + userFromParam + '&' + userToParam;
 	});
 }
 

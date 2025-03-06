@@ -1,4 +1,4 @@
-function goBackToMain() {
+function goBackToMain(userParam = 'user') {
 	const imgContainer = document.querySelector('.img-container');
 
 	imgContainer.addEventListener('click', (event) => {
@@ -10,16 +10,18 @@ function goBackToMain() {
 		) {
 			window.location.href = window.location.origin + '/Frontend/';
 		} else {
-			window.location.href = window.location.origin + '/Frontend/home/home.html?user=' + getUserParam();
+			window.location.href = window.location.origin + '/Frontend/home/home.html?user=' + getParam(userParam);
 		}
 	});
 }
 
-function getUserParam() {
+function getParam(paramTxt = 'user') {
 	const params = window.location.search.substring(1).split('&');
-	if (params.length > 0) {
-		const username = params[0].substring(params[0].search('user=') + 5);
-		return username;
+	for (let i = 0; i < params.length; i++) {
+		if (params[i].includes(paramTxt)) {
+			const username = params[i].substring(params[i].search(paramTxt + '=') + paramTxt.length + 1);
+			return username;
+		}
 	}
 	return '';
 }
