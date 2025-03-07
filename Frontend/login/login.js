@@ -13,7 +13,7 @@ function loginFormEventHandler() {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.STATUS == 'SUCCESS') {
-					const userParam = 'user=' + formData.get('username');
+					const userParam = 'user=' + encryptUserName(formData.get('username'));
 					window.location.href = '../home/home.html?' + userParam;
 				} else {
 					console.log(data);
