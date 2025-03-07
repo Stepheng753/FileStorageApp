@@ -12,9 +12,11 @@ function loginFormEventHandler() {
 		})
 			.then((res) => res.json())
 			.then((data) => {
+				console.log(data);
 				if (data.STATUS == 'SUCCESS') {
 					const userParam = 'user=' + encryptUserName(formData.get('username'));
-					window.location.href = '../home/home.html?' + userParam;
+					const permissionParam = 'permission=' + encryptUserName(data.PERMISSION_TIER);
+					window.location.href = '../home/home.html?' + userParam + '&' + permissionParam;
 				} else {
 					console.log(data);
 				}

@@ -17,7 +17,7 @@ def login():
         return {'STATUS': 'FAILURE', 'ERROR': 'DB ERROR'}
 
     login_success = user[PASSWORD_IDX] == password
-    return {'STATUS': 'SUCCESS'} if login_success else {'STATUS': 'FAILURE', 'ERROR': 'WRONG PASSWORD'}
+    return {'STATUS': 'SUCCESS', 'PERMISSION_TIER': user[3]} if login_success else {'STATUS': 'FAILURE', 'ERROR': 'WRONG PASSWORD'}
 
 
 def register():

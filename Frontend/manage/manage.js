@@ -53,7 +53,8 @@ function editButtonEventHandler(editButton, username) {
 
 		const userFromParam = 'userFrom=' + getParam();
 		const userToParam = 'userTo=' + encryptUserName(username);
-		window.location.href = '../edit/edit.html?' + userFromParam + '&' + userToParam;
+		const permissionParam = 'permission=' + getParam('permission');
+		window.location.href = '../edit/edit.html?' + userFromParam + '&' + userToParam + '&' + permissionParam;
 	});
 }
 

@@ -9,6 +9,14 @@ function goBackToMain(userParam = 'user') {
 			window.location.href.includes('register')
 		) {
 			window.location.href = window.location.origin + '/Frontend/';
+		}
+		if (getParam('permission').length > 0) {
+			window.location.href =
+				window.location.origin +
+				'/Frontend/home/home.html?user=' +
+				getParam(userParam) +
+				'&permission=' +
+				getParam('permission');
 		} else {
 			window.location.href = window.location.origin + '/Frontend/home/home.html?user=' + getParam(userParam);
 		}
@@ -25,13 +33,5 @@ function getParam(paramTxt = 'user') {
 	}
 	return '';
 }
-
-// function encryptUserName(username) {
-// 	return CryptoJS.AES.encrypt(username, key).toString();
-// }
-
-// function decryptUserName(encodedMsg) {
-// 	return CryptoJS.AES.decrypt(encodedMsg, key).toString(CryptoJS.enc.Utf8);
-// }
 
 goBackToMain();
