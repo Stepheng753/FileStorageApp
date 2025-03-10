@@ -2,11 +2,10 @@ function redirectButtonHandle(btnType) {
 	const button = document.getElementById(btnType + '-btn');
 	button.addEventListener('click', (event) => {
 		event.preventDefault();
-
+		console.log(btnType);
 		if (btnType == 'logout') {
 			window.location.href = '../';
-		}
-		if (getParam('permission').length > 0) {
+		} else if (getParam('permission').length > 0) {
 			window.location.href =
 				'../' + btnType + '/' + btnType + '.html?user=' + getParam() + '&permission=' + getParam('permission');
 		} else {

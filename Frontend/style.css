@@ -1,5 +1,18 @@
+:root {
+	--primary-color: #007bff;
+	--secondary-color: #6c757d;
+	--success-color: #28a745;
+	--danger-color: #dc3545;
+	--warning-color: #ffc107;
+	--info-color: #17a2b8;
+	--light-color: #f8f9fa;
+	--dark-color: #343a40;
+	--background-color: #f0f0f0;
+	--second-background-color: #fff;
+}
+
 body {
-	background-color: #f0f0f0;
+	background-color: var(--background-color);
 	font-family: Arial, sans-serif;
 	display: flex;
 	flex-direction: column;
@@ -39,7 +52,7 @@ body {
 	margin-inline: 100px;
 	margin-bottom: 50px;
 	padding: 50px;
-	background-color: #fff;
+	background-color: var(--second-background-color);
 	border-radius: 5px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	display: flex;
@@ -60,7 +73,7 @@ input {
 	width: 100%;
 	padding: 10px;
 	margin-bottom: 15px;
-	border: 1px solid #ccc;
+	border: 1px solid var(--second-background-color);
 	border-radius: 5px;
 	box-sizing: border-box;
 }
@@ -69,7 +82,7 @@ button {
 	width: 100%;
 	padding: 10px;
 	margin-bottom: 15px;
-	background-color: #007bff;
+	background-color: var(--primary-color);
 	color: white;
 	border: none;
 	border-radius: 5px;

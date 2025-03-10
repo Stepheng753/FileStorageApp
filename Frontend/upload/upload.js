@@ -14,7 +14,8 @@ function uploadFormEventHandler() {
 			.then((data) => {
 				if (data.STATUS == 'SUCCESS') {
 					const userParam = 'user=' + getParam();
-					window.location.href = '../home/home.html?' + userParam;
+					const permissionParam = 'permission=' + getParam('permission');
+					window.location.href = '../home/home.html?' + userParam + '&' + permissionParam;
 				} else {
 					console.log(data);
 				}

@@ -8,8 +8,8 @@
 
 .file-link {
 	padding: 10px;
-	background-color: #ffffff;
-	color: #000;
+	background-color: var(--second-background-color);
+	color: black;
 	border: 1px solid #ddd;
 	border-radius: 5px;
 	text-decoration: none;
@@ -20,6 +20,6 @@
 }
 
 .file-link:hover {
-	background-color: #007bff;
+	background-color: var(--primary-color);
 	color: white;
 }

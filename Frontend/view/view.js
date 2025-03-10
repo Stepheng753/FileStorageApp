@@ -1,4 +1,4 @@
-const FILES_DIR = '../../Backend/files/';
+const FILES_DIR = '../files/';
 const filesContainer = document.querySelector('div.file-links');
 
 function getAllFiles() {
