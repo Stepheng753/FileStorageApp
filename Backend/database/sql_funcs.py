@@ -11,6 +11,8 @@ def create_users_database():
             CREATE TABLE IF NOT EXISTS
             users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                firstname TEXT NOT NULL,
+                lastname TEXT NOT NULL,
                 username TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
                 permission_tier INT NOT NULL DEFAULT 2,
@@ -29,14 +31,14 @@ def create_users_database():
     return True
 
 
-def insert_user_entry(username, password, permission_tier = 3):
+def insert_user_entry(firstname, lastname, username, password, permission_tier = 3):
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO users (username, password, permission_tier)
-            VALUES (?, ?, ?)
-        ''', (username.upper(), password, permission_tier))
+            INSERT INTO users (firstname, lastname, username, password, permission_tier)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (firstname.capitalize(), lastname.capitalize(), username.upper(), password, permission_tier))
         conn.commit()
         conn.close()
         print("USER CREATED: SUCCESS")

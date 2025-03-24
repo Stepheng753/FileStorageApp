@@ -1,14 +1,8 @@
 :root {
-	--primary-color: #007bff;
-	--secondary-color: #6c757d;
-	--success-color: #28a745;
+	--button-color: #007bff;
 	--danger-color: #dc3545;
-	--warning-color: #ffc107;
-	--info-color: #17a2b8;
-	--light-color: #f8f9fa;
-	--dark-color: #343a40;
 	--background-color: #f0f0f0;
-	--second-background-color: #fff;
+	--container-color: #fff;
 }
 
 body {
@@ -52,7 +46,7 @@ body {
 	margin-inline: 100px;
 	margin-bottom: 50px;
 	padding: 50px;
-	background-color: var(--second-background-color);
+	background-color: var(--container-color);
 	border-radius: 5px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	display: flex;
@@ -73,7 +67,7 @@ input {
 	width: 100%;
 	padding: 10px;
 	margin-bottom: 15px;
-	border: 1px solid var(--second-background-color);
+	border: 1px solid black;
 	border-radius: 5px;
 	box-sizing: border-box;
 }
@@ -82,7 +76,7 @@ button {
 	width: 100%;
 	padding: 10px;
 	margin-bottom: 15px;
-	background-color: var(--primary-color);
+	background-color: var(--button-color);
 	color: white;
 	border: none;
 	border-radius: 5px;

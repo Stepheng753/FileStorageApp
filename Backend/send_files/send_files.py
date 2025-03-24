@@ -21,4 +21,8 @@ def upload_file():
 
 
 def download_files():
-    return os.listdir(FILES_PATH)
+    files_dict = {}
+    for root, _, files in os.walk(FILES_PATH):
+        folder_name = os.path.basename(root)
+        files_dict[folder_name] = files
+    return files_dict

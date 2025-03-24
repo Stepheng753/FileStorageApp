@@ -5,20 +5,26 @@ function getAllUsers() {
 		.then((res) => res.json())
 		.then((users) => {
 			users.forEach((user) => {
-				const username = user[1];
-				const password = user[2];
-				const permissionTier = user[3];
-				makeUserItem(username, password, permissionTier);
+				const firstname = user[1];
+				const lastname = user[2];
+				const username = user[3];
+				const password = user[4];
+				const permissionTier = user[5];
+				makeUserItem(firstname, lastname, username, password, permissionTier);
 			});
 		});
 }
 
-function makeUserItem(username, password, permissionTier) {
+function makeUserItem(firstname, lastname, username, password, permissionTier) {
 	const userItem = document.createElement('div');
 	userItem.className = 'user-item';
 
 	const userInfo = document.createElement('div');
 	userInfo.className = 'user-info';
+
+	const nameSpan = document.createElement('span');
+	nameSpan.className = 'name';
+	nameSpan.innerText = `${firstname} ${lastname}`;
 
 	const usernameSpan = document.createElement('span');
 	usernameSpan.className = 'username';
@@ -32,6 +38,7 @@ function makeUserItem(username, password, permissionTier) {
 	permissionTierSpan.className = 'permission-tier';
 	permissionTierSpan.innerText = permissionTier;
 
+	userInfo.appendChild(nameSpan);
 	userInfo.appendChild(usernameSpan);
 	userInfo.appendChild(passwordSpan);
 	userInfo.appendChild(permissionTierSpan);

@@ -4,11 +4,12 @@
 	gap: 20px;
 	margin-top: 20px;
 	width: 100%;
+	margin-bottom: 15px;
 }
 
 .file-link {
 	padding: 10px;
-	background-color: var(--second-background-color);
+	background-color: var(--container-color);
 	color: black;
 	border: 1px solid #ddd;
 	border-radius: 5px;
@@ -20,6 +21,6 @@
 }
 
 .file-link:hover {
-	background-color: var(--primary-color);
+	background-color: var(--button-color);
 	color: white;
 }

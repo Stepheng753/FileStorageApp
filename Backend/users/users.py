@@ -17,7 +17,7 @@ def login():
         return {'STATUS': 'FAILURE', 'ERROR': 'DB ERROR'}
 
     login_success = user[PASSWORD_IDX] == password
-    return {'STATUS': 'SUCCESS', 'PERMISSION_TIER': user[3]} if login_success else {'STATUS': 'FAILURE', 'ERROR': 'WRONG PASSWORD'}
+    return {'STATUS': 'SUCCESS', 'PERMISSION_TIER': user[PERMISSION_IDX]} if login_success else {'STATUS': 'FAILURE', 'ERROR': 'WRONG PASSWORD'}
 
 
 def register():
@@ -26,10 +26,14 @@ def register():
         return {'STATUS': 'FAILURE', 'ERROR': 'INVALID RESPONSE'}, 400
     if "username" not in user_pass or "password" not in user_pass:
         return {'STATUS': 'FAILURE', 'ERROR': 'MISSING PARAMETERS'}, 400
+    if "firstname" not in user_pass or "lastname" not in user_pass:
+        return {'STATUS': 'FAILURE', 'ERROR': 'MISSING PARAMETERS'}, 400
+    firstname = user_pass["firstname"]
+    lastname = user_pass["lastname"]
     username = user_pass["username"]
     password = user_pass["password"]
 
-    register_success = insert_user_entry(username, password)
+    register_success = insert_user_entry(firstname, lastname, username, password)
     return {'STATUS': 'SUCCESS'} if register_success else {'STATUS': 'FAILURE', 'ERROR': 'DB ERROR'}
 
 
@@ -48,7 +52,6 @@ def update_permission_tier():
 
 def update_password():
     user_old_new_pass = request.form
-    print(user_old_new_pass)
     if user_old_new_pass is None:
         return {'STATUS': 'FAILURE', 'ERROR': 'INVALID RESPONSE'}, 400
     if "username" not in user_old_new_pass or \

@@ -9,8 +9,7 @@ function goBackToMain(userParam = 'user') {
 			window.location.href.includes('register')
 		) {
 			window.location.href = window.location.origin + '/Frontend/';
-		}
-		if (getParam('permission').length > 0) {
+		} else if (getParam('permission').length > 0) {
 			window.location.href =
 				window.location.origin +
 				'/Frontend/home/home.html?user=' +
