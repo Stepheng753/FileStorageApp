@@ -18,6 +18,8 @@ function loginFormEventHandler() {
 					window.location.href = '../home/home.html?' + userParam + '&' + permissionParam;
 				} else {
 					console.log(data);
+					alert('Login failed. Please check your username and password.');
+					loginForm.reset();
 				}
 			})
 			.catch((error) => console.log('Error: ', error));

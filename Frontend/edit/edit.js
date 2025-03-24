@@ -88,7 +88,7 @@ function setDefaultPermissionVal() {
 		.then((users) => {
 			const user = users[0];
 			const permissionInput = document.getElementById('permission-input');
-			permissionInput.setAttribute('value', user[3]);
+			permissionInput.setAttribute('value', user[5]);
 		})
 		.catch((error) => console.log('Error: ', error));
 }

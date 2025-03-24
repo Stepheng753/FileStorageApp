@@ -24,13 +24,18 @@ function filterButtons() {
 
 		const manageBtn = document.getElementById('manage-btn');
 		manageBtn.style.display = 'none';
-	}
-	if (permissionVal == 2) {
+
+		const deleteBtn = document.getElementById('delete-btn');
+		deleteBtn.style.display = 'none';
+	} else if (permissionVal == 2) {
 		const uploadBtn = document.getElementById('upload-btn');
 		uploadBtn.style.display = 'none';
 
 		const manageBtn = document.getElementById('manage-btn');
 		manageBtn.style.display = 'none';
+
+		const deleteBtn = document.getElementById('delete-btn');
+		deleteBtn.style.display = 'none';
 	}
 }
 
@@ -38,4 +43,5 @@ redirectButtonHandle('logout');
 redirectButtonHandle('upload');
 redirectButtonHandle('view');
 redirectButtonHandle('manage');
+redirectButtonHandle('delete');
 filterButtons();

@@ -19,6 +19,8 @@
 		<div class="container">
 			<h2>Upload File</h2>
 			<form action="/upload" method="POST" enctype="multipart/form-data" id="upload-form">
+				<select id="folder-select" name="folder" required>
+					<option value="" disabled selected>Select a folder</option>
 				<input type="file" name="file" required />
 				<button type="upload">Upload</button>
 			</form>

@@ -15,6 +15,7 @@ app.add_url_rule("/register", "register", register, methods=["POST"])
 
 app.add_url_rule("/upload_file", "upload_file", upload_file, methods=["POST"])
 app.add_url_rule("/download_files", "download_files", download_files, methods=["POST"])
+app.add_url_rule("/delete_file", "delete_file", delete_file, methods=["POST"])
 
 app.add_url_rule("/update_permission_tier", "update_permission_tier", update_permission_tier, methods=["POST"])
 app.add_url_rule("/update_password", "update_password", update_password, methods=["POST"])

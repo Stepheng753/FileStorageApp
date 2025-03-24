@@ -23,4 +23,37 @@ function uploadFormEventHandler() {
 	});
 }
 
+function getFolders() {
+	fetch('http://127.0.0.1:5000/download_files', { method: 'POST' })
+		.then((res) => res.json())
+		.then((files) => {
+			let folders = [];
+			for (const folderName in files) {
+				if (folderName.length > 0) {
+					folders.push(folderName);
+				}
+			}
+			const folderSelect = document.getElementById('folder-select');
+			folders.forEach((folder) => {
+				const option = document.createElement('option');
+				option.value = folder;
+				option.innerText = folder;
+				folderSelect.appendChild(option);
+			});
+			const newFolder = document.createElement('option');
+			newFolder.innerText = 'New Folder';
+			folderSelect.appendChild(newFolder);
+			folderSelect.addEventListener('change', () => {
+				if (folderSelect.value === 'New Folder') {
+					const newFolderInput = document.createElement('input');
+					newFolderInput.type = 'text';
+					newFolderInput.placeholder = 'Enter new folder name';
+					newFolderInput.name = 'folder';
+					folderSelect.parentNode.replaceChild(newFolderInput, folderSelect);
+				}
+			});
+		});
+}
+
+getFolders();
 uploadFormEventHandler();

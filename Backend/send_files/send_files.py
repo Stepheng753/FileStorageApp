@@ -4,15 +4,23 @@ from main import FILES_PATH
 
 def upload_file():
     if 'file' not in request.files:
-        return {'status': 'failure', 'message': 'No file provided'}
+        return {'STATUS': 'FAILURE', 'ERROR': 'NO FILE PROVIDED'}
 
+    print(request.files)
+    print(request.form)
     file = request.files['file']
+    folder = request.form['folder']
+    print(folder)
 
     if file.filename == '':
-        return {'status': 'failure', 'message': 'No selected file'}
+        return {'STATUS': 'FAILURE', 'ERROR': 'NO SELECTED FILE'}
+    if folder == '':
+        return {'STATUS': 'FAILURE', 'ERROR': 'No SELECTED FOLDER'}
+
+    os.makedirs(os.path.join(FILES_PATH, folder), exist_ok=True)
 
     if file:
-        filename = file.filename
+        filename = folder + '/' + file.filename
         filepath = os.path.join(FILES_PATH, filename)
         file.save(filepath)
         return {'STATUS': 'SUCCESS'}
@@ -26,3 +34,18 @@ def download_files():
         folder_name = os.path.basename(root)
         files_dict[folder_name] = files
     return files_dict
+
+
+def delete_file():
+    folder = request.form['folder']
+    filename = request.form['file']
+    filepath = os.path.join(FILES_PATH, folder, filename)
+
+    if os.path.exists(filepath):
+        os.remove(filepath)
+        if not os.listdir(os.path.join(FILES_PATH, folder)):
+            os.rmdir(os.path.join(FILES_PATH, folder))
+
+        return {'STATUS': 'SUCCESS'}
+    else:
+        return {'STATUS': 'FAILURE', 'ERROR': 'FILE NOT FOUND'}

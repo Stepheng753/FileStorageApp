@@ -64,9 +64,12 @@ def get_user_entry(username):
         user = cursor.fetchone()
         conn.commit()
         conn.close()
+        if user is None:
+            raise Exception("User not found")
+
         print("USER SELECTED: SUCCESS")
 
-    except sqlite3.Error as e:
+    except (sqlite3.Error, Exception) as e:
         print(e)
         print("USER SELECTED: FAILURE")
         conn.close()
