@@ -7,7 +7,7 @@ function changePassEventHandler() {
 		const formData = new FormData(passwordForm);
 		formData.append('username', decryptUserName(getParam('userTo')));
 
-		fetch('http://127.0.0.1:5000/update_password', {
+		fetch(backendUrl + '/update_password', {
 			method: 'POST',
 			body: formData,
 		})
@@ -34,7 +34,7 @@ function changePermissionEventHandler() {
 		const formData = new FormData(permissionForm);
 		formData.append('username', decryptUserName(getParam('userTo')));
 
-		fetch('http://127.0.0.1:5000/update_permission_tier', {
+		fetch(backendUrl + '/update_permission_tier', {
 			method: 'POST',
 			body: formData,
 		})
@@ -61,7 +61,7 @@ function deleteUser() {
 		const formData = new FormData();
 		formData.append('username', decryptUserName(getParam('userTo')));
 
-		fetch('http://127.0.0.1:5000/delete_user', {
+		fetch(backendUrl + '/delete_user', {
 			method: 'POST',
 			body: formData,
 		})
@@ -83,7 +83,7 @@ function setDefaultPermissionVal() {
 	const formData = new FormData();
 	formData.append('username', decryptUserName(getParam('userTo')));
 
-	fetch('http://127.0.0.1:5000/get_user', { method: 'POST', body: formData })
+	fetch(backendUrl + '/get_user', { method: 'POST', body: formData })
 		.then((res) => res.json())
 		.then((users) => {
 			const user = users[0];

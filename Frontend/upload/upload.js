@@ -6,7 +6,7 @@ function uploadFormEventHandler() {
 
 		const formData = new FormData(uploadForm);
 
-		fetch('http://127.0.0.1:5000/upload_file', {
+		fetch(backendUrl + '/upload_file', {
 			method: 'POST',
 			body: formData,
 		})
@@ -24,7 +24,7 @@ function uploadFormEventHandler() {
 }
 
 function getFolders() {
-	fetch('http://127.0.0.1:5000/download_files', { method: 'POST' })
+	fetch(backendUrl + '/download_files', { method: 'POST' })
 		.then((res) => res.json())
 		.then((files) => {
 			let folders = [];

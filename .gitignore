@@ -2,4 +2,4 @@ __pycache__
 users.db
 .devdbrc
 venv
-Frontend/files/
+Backend/static/*

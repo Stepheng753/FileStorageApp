@@ -6,7 +6,7 @@ function getAllFiles() {
 		folderContainer.removeChild(folderContainer.firstChild);
 	}
 	makeH2();
-	fetch('http://127.0.0.1:5000/download_files', { method: 'POST' })
+	fetch(backendUrl + '/download_files', { method: 'POST' })
 		.then((res) => res.json())
 		.then((files) => {
 			let looseFiles = [];
@@ -91,7 +91,7 @@ function deleteFile(folder, file) {
 	const formData = new FormData();
 	formData.append('folder', folder);
 	formData.append('file', file);
-	fetch('http://127.0.0.1:5000/delete_file', { method: 'POST', body: formData })
+	fetch(backendUrl + '/delete_file', { method: 'POST', body: formData })
 		.then((res) => res.json())
 		.then((data) => {
 			if (data.STATUS === 'SUCCESS') {

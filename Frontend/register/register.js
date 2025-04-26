@@ -6,7 +6,7 @@ function registerFormEventHandler() {
 
 		const formData = new FormData(registerForm);
 
-		fetch('http://127.0.0.1:5000/register', {
+		fetch(backendUrl + '/register', {
 			method: 'POST',
 			body: formData,
 		})

@@ -6,7 +6,7 @@ function loginFormEventHandler() {
 
 		const formData = new FormData(loginForm);
 
-		fetch('http://127.0.0.1:5000/login', {
+		fetch(backendUrl + '/login', {
 			method: 'POST',
 			body: formData,
 		})

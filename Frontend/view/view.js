@@ -1,9 +1,9 @@
-const FILES_DIR = '../files/';
+const FILES_DIR = backendUrl + '/static/';
 const folderContainer = document.querySelector('div.container');
 
 function getAllFiles() {
 	makeH2();
-	fetch('http://127.0.0.1:5000/download_files', { method: 'POST' })
+	fetch(backendUrl + '/download_files', { method: 'POST' })
 		.then((res) => res.json())
 		.then((files) => {
 			let looseFiles = [];

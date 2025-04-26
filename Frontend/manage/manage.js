@@ -1,7 +1,7 @@
 const userContainer = document.querySelector('div.user-list');
 
 function getAllUsers() {
-	fetch('http://127.0.0.1:5000/get_all_users', { method: 'GET' })
+	fetch(backendUrl + '/get_all_users', { method: 'GET' })
 		.then((res) => res.json())
 		.then((users) => {
 			users.forEach((user) => {

@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, url_for
 import os
 from main import FILES_PATH
 
@@ -6,11 +6,8 @@ def upload_file():
     if 'file' not in request.files:
         return {'STATUS': 'FAILURE', 'ERROR': 'NO FILE PROVIDED'}
 
-    print(request.files)
-    print(request.form)
     file = request.files['file']
     folder = request.form['folder']
-    print(folder)
 
     if file.filename == '':
         return {'STATUS': 'FAILURE', 'ERROR': 'NO SELECTED FILE'}
@@ -23,6 +20,7 @@ def upload_file():
         filename = folder + '/' + file.filename
         filepath = os.path.join(FILES_PATH, filename)
         file.save(filepath)
+        file_url = url_for('static', filename=filename, _external=True)
         return {'STATUS': 'SUCCESS'}
 
     return  {'STATUS': 'FAILURE'}

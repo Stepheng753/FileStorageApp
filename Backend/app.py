@@ -6,7 +6,7 @@ from main import *
 from users.users import *
 from send_files.send_files import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 CORS(app)
 
 app.add_url_rule("/", "index", index)
@@ -24,4 +24,5 @@ app.add_url_rule("/get_all_users", "get_all_users", get_all_users, methods=["GET
 app.add_url_rule("/delete_user", "delete_user", delete_user, methods=["POST"])
 
 if __name__ == "__main__":
-    app.run(host="69.62.71.85", debug=False)
+    app.run(debug=True)
+    # app.run(host="69.62.71.85", debug=False)
