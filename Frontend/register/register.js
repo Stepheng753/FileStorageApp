@@ -15,7 +15,7 @@ function registerFormEventHandler() {
 				if (data.STATUS == 'SUCCESS') {
 					window.location.href = '../login/login.html';
 				} else {
-					console.log(data);
+					alert('Error: ' + data.ERROR);
 				}
 			})
 			.catch((error) => console.log('Error: ', error));

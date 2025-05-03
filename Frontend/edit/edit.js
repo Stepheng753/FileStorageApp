@@ -18,7 +18,7 @@ function changePassEventHandler() {
 					const permissionParam = 'permission=' + getParam('permission');
 					window.location.href = '../home/home.html?' + userParam + '&' + permissionParam;
 				} else {
-					console.log(data);
+					alert('Error: ' + data.ERROR);
 				}
 			})
 			.catch((error) => console.log('Error: ', error));
@@ -45,7 +45,7 @@ function changePermissionEventHandler() {
 					const permissionParam = 'permission=' + getParam('permission');
 					window.location.href = '../home/home.html?' + userParam + '&' + permissionParam;
 				} else {
-					console.log(data);
+					alert('Error: ' + data.ERROR);
 				}
 			})
 			.catch((error) => console.log('Error: ', error));
@@ -72,7 +72,7 @@ function deleteUser() {
 					const permissionParam = 'permission=' + getParam('permission');
 					window.location.href = '../home/home.html?' + userParam + '&' + permissionParam;
 				} else {
-					console.log(data);
+					alert('Error: ' + data.ERROR);
 				}
 			})
 			.catch((error) => console.log('Error: ', error));

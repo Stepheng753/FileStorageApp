@@ -17,7 +17,7 @@ function uploadFormEventHandler() {
 					const permissionParam = 'permission=' + getParam('permission');
 					window.location.href = '../home/home.html?' + userParam + '&' + permissionParam;
 				} else {
-					console.log(data);
+					alert('Error:' + data.ERROR);
 				}
 			});
 	});

@@ -97,7 +97,7 @@ function deleteFile(folder, file) {
 			if (data.STATUS === 'SUCCESS') {
 				getAllFiles();
 			} else {
-				console.log(data);
+				alert('Error: ' + data.ERROR);
 			}
 		});
 }
