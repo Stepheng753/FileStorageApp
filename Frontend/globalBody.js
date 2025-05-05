@@ -3,23 +3,36 @@ function goBackToMain(userParam = 'user') {
 
 	imgContainer.addEventListener('click', (event) => {
 		event.preventDefault();
-		if (
-			window.location.href == window.location.origin + '/Frontend/' ||
-			window.location.href.includes('login') ||
-			window.location.href.includes('register')
-		) {
-			window.location.href = window.location.origin + '/Frontend/';
-		} else if (getParam('permission').length > 0) {
-			window.location.href =
-				window.location.origin +
-				'/Frontend/home/home.html?user=' +
-				getParam(userParam) +
-				'&permission=' +
-				getParam('permission');
-		} else {
-			window.location.href = window.location.origin + '/Frontend/home/home.html?user=' + getParam(userParam);
-		}
+		homeLogic(userParam);
 	});
+
+	let homeBtn = document.createElement('div');
+	homeBtn.id = 'home-btn';
+	homeBtn.innerText = 'Go Back to Home';
+	document.body.appendChild(homeBtn);
+	homeBtn.addEventListener('click', (event) => {
+		event.preventDefault();
+		homeLogic(userParam);
+	});
+}
+
+function homeLogic(userParam) {
+	if (
+		window.location.href == window.location.origin + '/Frontend/' ||
+		window.location.href.includes('login') ||
+		window.location.href.includes('register')
+	) {
+		window.location.href = window.location.origin + '/Frontend/';
+	} else if (getParam('permission').length > 0) {
+		window.location.href =
+			window.location.origin +
+			'/Frontend/home/home.html?user=' +
+			getParam(userParam) +
+			'&permission=' +
+			getParam('permission');
+	} else {
+		window.location.href = window.location.origin + '/Frontend/home/home.html?user=' + getParam(userParam);
+	}
 }
 
 function getParam(paramTxt = 'user') {

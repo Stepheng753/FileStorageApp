@@ -1,6 +1,7 @@
 :root {
 	--button-color: #007bff;
 	--danger-color: #dc3545;
+	--green-color: #009688;
 	--background-color: #f0f0f0;
 	--container-color: #fff;
 }
@@ -76,13 +77,28 @@ button {
 	width: 100%;
 	padding: 10px;
 	margin-bottom: 15px;
-	background-color: var(--button-color);
 	color: white;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
 	font-size: 16px;
 	font-weight: 600;
+
+	background-color: var(--button-color);
+	background-image: linear-gradient(var(--green-color), var(--green-color));
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	background-size: 0% 100%;
+	transition: all 0.25s;
+}
+
+button:hover {
+	background-size: 100% 100%;
+	scale: 1.025;
+}
+button:disabled {
+	background-color: var(--green-color);
+	cursor: not-allowed;
 }
 
 select {
@@ -92,4 +108,30 @@ select {
 	border: 1px solid black;
 	border-radius: 5px;
 	box-sizing: border-box;
+}
+
+/* make it bounce */
+#home-btn {
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+	padding: 5px;
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 600;
+	background-color: var(--green-color);
+	border-radius: 5px;
+	animation: zoom 5s infinite;
+}
+
+@keyframes zoom {
+	0%,
+	25% {
+		transform: scale(1);
+	}
+	15% {
+		transform: scale(1.05);
+	}
 }

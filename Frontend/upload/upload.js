@@ -4,6 +4,10 @@ function uploadFormEventHandler() {
 	uploadForm.addEventListener('submit', (event) => {
 		event.preventDefault();
 
+		const uploadBtn = document.getElementById('upload-btn');
+		uploadBtn.innerText = 'Uploading...';
+		uploadBtn.disabled = true;
+
 		const formData = new FormData(uploadForm);
 
 		fetch(backendUrl + '/upload_file', {
