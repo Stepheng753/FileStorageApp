@@ -7,7 +7,7 @@ from users.users import *
 from send_files.send_files import *
 
 app = Flask(__name__, static_folder="static")
-CORS(app)
+CORS(app, resources={r"/login": {"origins": "http://toothmanager.com"}})
 
 app.add_url_rule("/", "index", index)
 app.add_url_rule("/login", "login", login, methods=["POST"])
