@@ -1,13 +1,22 @@
 #!/usr/bin/env python3
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from main import *
 from users.users import *
 from send_files.send_files import *
 
 app = Flask(__name__, static_folder="static")
-CORS(app, origins=["http://toothmanager.com"])
+CORS(app, origins=["http://toothmanager.com"], supports_credentials=True)
+
+@app.before_request
+def before_request():
+    headers = {'Access-Control-Allow-Origin': '*',
+               'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+               'Access-Control-Allow-Headers': 'Content-Type',
+               'Test-Header': 'Test-Value'}
+    if request.method.lower() == 'options':
+        return jsonify(headers), 200
 
 app.add_url_rule("/", "index", index)
 app.add_url_rule("/login", "login", login, methods=["POST"])
