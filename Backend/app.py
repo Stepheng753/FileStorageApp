@@ -34,4 +34,4 @@ app.add_url_rule("/delete_user", "delete_user", delete_user, methods=["POST"])
 
 if __name__ == "__main__":
     # app.run(debug=True)
-    app.run(host="69.62.71.85", port=5000, debug=False)
+    app.run(host="toothmanager.com", port=5000, debug=False)
