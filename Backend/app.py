@@ -7,7 +7,7 @@ from users.users import *
 from send_files.send_files import *
 
 app = Flask(__name__, static_folder="static")
-CORS(app, origins=["http://toothmanager.com", "http://127.0.0.1:5500"], supports_credentials=True)
+CORS(app, origins=["http://toothmanager.com", "http://127.0.0.1:5500", "https://toothmanager.com"], supports_credentials=True)
 
 @app.before_request
 def before_request():
@@ -34,5 +34,7 @@ app.add_url_rule("/delete_user", "delete_user", delete_user, methods=["POST"])
 
 if __name__ == "__main__":
     # app.run(debug=True)
-    # app.run(host="69.62.71.85", port=5000, debug=False)
-    app.run(host="toothmanager.com", port=5000, debug=False)
+    app.run(host="69.62.71.85", port=5000, debug=False)
+    # app.run(host="69.62.71.85", port=5000, debug=False, ssl_context='adhoc')
+    # app.run(host="toothmanager.com", port=5000, debug=False)
+    # app.run(host="toothmanager.com", port=5000, debug=False, ssl_context='adhoc')
