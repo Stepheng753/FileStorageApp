@@ -5,4 +5,4 @@ FILES_PATH = 'static/'
 
 
 def index():
-    return {}
+    return 'Hello from Dev.ToothManager.com'

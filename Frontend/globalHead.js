@@ -1,9 +1,4 @@
-// const backendUrl = 'http://127.0.0.1:5000';
-// const backendUrl = 'https://127.0.0.1:5000';
-const backendUrl = 'http://69.62.71.85:5000';
-// const backendUrl = 'https://69.62.71.85:5000';
-// const backendUrl = 'http://toothmanager.com:5000';
-// const backendUrl = 'https://toothmanager.com:5000';
+const backendUrl = 'https://dev.toothmanager.com';
 let key = '03022000';
 let lastMouseDown = 0;
 let timeout;
