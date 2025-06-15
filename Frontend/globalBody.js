@@ -45,3 +45,9 @@ function makePrettyBox(image_url, title, clickHandler) {
 
 	return prettyBox;
 }
+
+function removeAllChildNodes(parent) {
+	while (parent.firstChild) {
+		parent.removeChild(parent.firstChild);
+	}
+}

@@ -21,15 +21,23 @@
 	box-shadow: 0 2px 5px #0003;
 }
 
-.h3 {
-	cursor: pointer;
+.back-clicks {
 	width: 100px;
 	margin-top: 18px;
 	margin-bottom: 0;
 	margin-left: 800px;
-	font-size: 17px;
+	font-size: 15px;
 	position: absolute;
 	inset: 0% auto auto;
+	display: flex;
+	flex-direction: column;
+	grid-row-gap: 5px;
+}
+
+.h3 {
+	cursor: pointer;
+	width: 100%;
+	margin: 0;
 }
 
 .h3:hover {
