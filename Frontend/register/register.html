@@ -3,17 +3,24 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" href="../assets/3.png" />
+		<link rel="icon" href="../assets/tooth.png" />
 		<link rel="stylesheet" href="../style.css" />
+		<script src="../globalHead.js" type="text/javascript"></script>
 		<title>Tooth Manager</title>
 	</head>
 	<body class="body">
-		<section class="header">
-			<h3 class="h3">Sign Out</h3>
-			<div class="title-container">
-				<img src="../assets/tooth.png" loading="lazy" alt="" class="image darker" />
-				<h1 class="h1 darker">Tooth Manager</h1>
-			</div>
-		</section>
+		<div class="body-container">
+			<section class="header">
+				<h3 class="h3" onclick="window.location.href = '../index.html'">Sign Out</h3>
+				<div class="title-container">
+					<img src="../assets/tooth.png" loading="lazy" alt="" class="image darker" />
+					<h1 class="h1 darker">Tooth Manager</h1>
+				</div>
+			</section>
+			<section class="main-container">
+				<div class="container"></div>
+			</section>
+		</div>
+		<script src="../globalBody.js" type="text/javascript"></script>
 	</body>
 </html>
