@@ -3,23 +3,36 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" href="./assets/folder.svg" />
+		<link rel="icon" href="./assets/3.png" />
 		<link rel="stylesheet" href="style.css" />
-		<script src="./globalHead.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-		<title>FileStorageApp</title>
+		<title>Tooth Manager</title>
 	</head>
-	<body>
-		<div class="header">
-			<div class="img-container">
-				<img class="logo" src="./assets/folder.svg" />
+	<body class="body">
+		<section class="header">
+			<h3 class="h3">Sign Out</h3>
+			<div class="title-container">
+				<img src="./assets/tooth.png" loading="lazy" alt="" class="image darker" />
+				<h1 class="h1 darker">Tooth Manager</h1>
 			</div>
-			<h1 class="title">File Storage App</h1>
-		</div>
-		<div class="container">
-			<button onclick="window.location.href = './register/register.html'">Register</button>
-			<button onclick="window.location.href = './login/login.html'">Login</button>
-		</div>
-		<script src="./globalBody.js"></script>
+		</section>
+		<section class="main-container">
+			<div class="container">
+				<div class="row-boxes">
+					<div class="pretty-box" id="register-box" onclick="window.location.href = './register/register.html'">
+						<div class="icon-container"><img src="./assets/hr.png" loading="lazy" alt="" class="image" /></div>
+						<div class="box-title">
+							<h2 class="h2">Register</h2>
+						</div>
+					</div>
+					<div class="pretty-box" id="login-box" onclick="window.location.href = './login/login.html'">
+						<div class="icon-container"><img src="./assets/hr.png" loading="lazy" alt="" class="image" /></div>
+						<div class="box-title">
+							<h2 class="h2">Login</h2>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</section>
 	</body>
 </html>
