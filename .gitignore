@@ -3,3 +3,5 @@ users.db
 .devdbrc
 venv
 Backend/static/*
+*.credentials
+*.sh
