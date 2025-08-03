@@ -46,9 +46,14 @@ def delete_file():
 
     if os.path.exists(filepath):
         os.remove(filepath)
-        if not os.listdir(os.path.join(FILES_PATH, folder)):
-            os.rmdir(os.path.join(FILES_PATH, folder))
-
+        # Recursively remove empty parent directories up to FILES_PATH
+        dir_to_check = os.path.join(FILES_PATH, folder)
+        while dir_to_check != FILES_PATH:
+            if not os.listdir(dir_to_check):
+                os.rmdir(dir_to_check)
+                dir_to_check = os.path.dirname(dir_to_check)
+            else:
+                break
         return {'STATUS': 'SUCCESS'}
     else:
         return {'STATUS': 'FAILURE', 'ERROR': 'FILE NOT FOUND'}

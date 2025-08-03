@@ -16,7 +16,7 @@ function loginFormEventHandler() {
 					const userParam = 'user=' + encrypt(formData.get('username'));
 					const permissionParam = 'permission=' + encrypt(data.PERMISSION_TIER);
 					if (parseInt(data.PERMISSION_TIER) == 2) {
-						window.location.href = '../view/view.html?' + userParam + '&' + permissionParam;
+						window.location.href = '../files/files.html?' + userParam + '&' + permissionParam;
 					} else {
 						window.location.href = '../home/home.html?' + userParam + '&' + permissionParam;
 					}

@@ -205,3 +205,12 @@ button:disabled {
 	background-color: var(--green-color);
 	cursor: not-allowed;
 }
+
+select {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid black;
+	border-radius: 5px;
+	box-sizing: border-box;
+}

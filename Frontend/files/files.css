@@ -1,0 +1,21 @@
+.file-btn {
+	height: 50px;
+	width: 50px;
+	font-size: 18pt;
+	padding: 0;
+	position: fixed;
+	bottom: 20px;
+	left: calc(50vw + 450px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#delete-file {
+	background-color: var(--danger-color);
+	left: calc(50vw + 390px);
+}
+
+#new-folder {
+	left: calc(50vw + 450px);
+}
