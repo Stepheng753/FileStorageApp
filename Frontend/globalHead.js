@@ -1,4 +1,4 @@
-const backendUrl = 'https://dev.toothmanager.com';
+const backendUrl = 'http://127.0.0.1:3000/';
 let key = '03022000';
 let lastMouseDown = 0;
 let timeout;

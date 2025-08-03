@@ -32,5 +32,5 @@ app.add_url_rule("/get_user", "get_user", get_user, methods=["POST"])
 app.add_url_rule("/get_all_users", "get_all_users", get_all_users, methods=["GET"])
 app.add_url_rule("/delete_user", "delete_user", delete_user, methods=["POST"])
 
-# if __name__ == "__main__":
-#     app.run('0.0.0.0', port=3000)
+if __name__ == "__main__":
+    app.run('0.0.0.0', port=3000)

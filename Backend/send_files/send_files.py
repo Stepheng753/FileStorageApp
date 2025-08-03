@@ -26,12 +26,17 @@ def upload_file():
     return  {'STATUS': 'FAILURE'}
 
 
+def get_folder_dict(path):
+    folder_dict = {}
+    for entry in os.scandir(path):
+        if entry.is_dir():
+            folder_dict[entry.name] = get_folder_dict(entry.path)
+        elif entry.is_file():
+            folder_dict.setdefault('files', []).append(entry.name)
+    return folder_dict
+
 def download_files():
-    files_dict = {}
-    for root, _, files in os.walk(FILES_PATH):
-        folder_name = os.path.basename(root)
-        files_dict[folder_name] = files
-    return files_dict
+    return get_folder_dict(FILES_PATH)
 
 
 def delete_file():
