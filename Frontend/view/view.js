@@ -1,6 +1,5 @@
 const FILES_DIR = backendUrl + '/static/';
 let folders;
-let goBackFunc;
 
 function getFolders() {
 	fetch(backendUrl + '/download_files', { method: 'POST' })
@@ -8,7 +7,6 @@ function getFolders() {
 		.then((data) => {
 			folders = data;
 			showFolders();
-			makeHeader('../', true, goBackFunc);
 		});
 }
 
@@ -30,10 +28,7 @@ function showFolders() {
 	if (prettyBoxesList.length > 0) {
 		makeRowBoxes(prettyBoxesList);
 	}
-	goBackFunc = () => {
-		window.location.href = '../home/home.html';
-	};
-	makeHeader('../', true, goBackFunc);
+	makeHeader('../', true, false);
 }
 
 function showFiles(folder, file_list) {
@@ -57,7 +52,7 @@ function showFiles(folder, file_list) {
 		makeRowBoxes(prettyBoxesList);
 	}
 
-	goBackFunc = () => {
+	let goBackFunc = () => {
 		removeAllChildNodes(document.querySelector('.container'));
 		showFolders();
 	};

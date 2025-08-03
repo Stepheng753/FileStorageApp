@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="../assets/tooth.png" />
+		<link rel="stylesheet" href="../../style.css" />
+		<link rel="stylesheet" href="./edit.css" />
+		<script src="../../globalHead.js" type="text/javascript"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+		<title>Tooth Manager - User Manager</title>
+	</head>
+	<body class="body">
+		<div class="body-container">
+			<section class="main-container">
+				<div class="container">
+					<h2 id="pass-change-title"></h2>
+					<form action="/update_password" method="POST" id="update-password-form">
+						<input type="password" name="old_password" placeholder="Old Password" required />
+						<input type="password" name="new_password" placeholder="New Password" required />
+						<button type="update-password">Change Password</button>
+					</form>
+				</div>
+				<div class="container">
+					<h2 id="permission-change-title"></h2>
+					<form action="/update_permission_tier" method="POST" id="update-permission-form">
+						<input
+							type="number"
+							id="permission-input"
+							name="permission_tier"
+							min="1"
+							max="3"
+							placeholder="Permission Tier"
+							required
+						/>
+						<button type="update-permission">Change Permission Tier</button>
+					</form>
+				</div>
+				<div class="fake-container">
+					<button id="delete-btn">Delete User</button>
+				</div>
+			</section>
+		</div>
+		<script src="../../globalBody.js" type="text/javascript"></script>
+		<script src="./edit.js" type="text/javascript"></script>
+	</body>
+</html>

@@ -13,9 +13,13 @@ function loginFormEventHandler() {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.STATUS == 'SUCCESS') {
-					const userParam = 'user=' + encryptUserName(formData.get('username'));
-					const permissionParam = 'permission=' + encryptUserName(data.PERMISSION_TIER);
-					window.location.href = '../home/home.html?' + userParam + '&' + permissionParam;
+					const userParam = 'user=' + encrypt(formData.get('username'));
+					const permissionParam = 'permission=' + encrypt(data.PERMISSION_TIER);
+					if (parseInt(data.PERMISSION_TIER) == 2) {
+						window.location.href = '../view/view.html?' + userParam + '&' + permissionParam;
+					} else {
+						window.location.href = '../home/home.html?' + userParam + '&' + permissionParam;
+					}
 				} else {
 					alert('Login failed. Please check your username and password.');
 					loginForm.reset();
@@ -27,4 +31,4 @@ function loginFormEventHandler() {
 
 loginFormEventHandler();
 
-makeHeader('../', false, true, true);
+makeHeader('../', false, () => redirect('../', []), true);

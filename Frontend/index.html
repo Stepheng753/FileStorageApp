@@ -12,23 +12,21 @@
 	<body class="body">
 		<div class="body-container">
 			<section class="main-container">
-				<div class="container">
-					<div class="row-boxes">
-						<div class="pretty-box" id="login-box" onclick="window.location.href = './login/login.html'">
-							<div class="icon-container">
-								<img src="./assets/hr.png" loading="lazy" alt="" class="image" />
-							</div>
-							<div class="box-title">
-								<h2 class="h2">Login</h2>
-							</div>
-						</div>
-					</div>
-				</div>
+				<div class="container"></div>
 			</section>
 		</div>
 		<script src="./globalBody.js" type="text/javascript"></script>
 		<script>
 			makeHeader();
+			makeRowBoxes([
+				{
+					image_url: './assets/hr.png',
+					title: 'Login',
+					clickHandler: () => {
+						redirect('./login/login.html', []);
+					},
+				},
+			]);
 		</script>
 	</body>
 </html>

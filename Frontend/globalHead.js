@@ -15,19 +15,41 @@ function getParam(paramTxt = 'user') {
 	const params = window.location.search.substring(1).split('&');
 	for (let i = 0; i < params.length; i++) {
 		if (params[i].includes(paramTxt)) {
-			const encryptedUsername = params[i].substring(params[i].search(paramTxt + '=') + paramTxt.length + 1);
-			return encryptedUsername;
+			const encryptedStr = params[i].substring(params[i].search(paramTxt + '=') + paramTxt.length + 1);
+			return encryptedStr;
 		}
 	}
 	return '';
 }
 
-function encryptUserName(username) {
-	return CryptoJS.AES.encrypt(username.toString(), key).toString();
+function redirect(toUrl, paramSearchIndices = ['user', 'permission'], additionalParams = false) {
+	let params = window.location.search.substring(1);
+	if (paramSearchIndices.length > 0) {
+		toUrl += '?';
+		for (let i = 0; i < paramSearchIndices.length; i++) {
+			toUrl += paramSearchIndices[i] + '=' + getParam(paramSearchIndices[i]) + '&';
+		}
+	}
+	if (additionalParams) {
+		toUrl += additionalParams + '&';
+	}
+	window.location.href = toUrl;
 }
 
-function decryptUserName(encodedMsg) {
-	return CryptoJS.AES.decrypt(encodedMsg, key).toString(CryptoJS.enc.Utf8);
+function encrypt(strToEncrypt) {
+	return CryptoJS.AES.encrypt(strToEncrypt.toString(), key).toString();
+}
+
+function decrypt(strToDecrypt) {
+	return CryptoJS.AES.decrypt(strToDecrypt, key).toString(CryptoJS.enc.Utf8);
+}
+
+function getUserName() {
+	return decrypt(getParam('user'));
+}
+
+function getPermission() {
+	return parseInt(decrypt(getParam('permission')));
 }
 
 document.addEventListener('mousedown', function (event) {

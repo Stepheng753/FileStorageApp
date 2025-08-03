@@ -23,5 +23,4 @@ function registerFormEventHandler() {
 }
 
 registerFormEventHandler();
-
-makeHeader('../', false, true, false);
+makeHeader('../', false, () => redirect('../login/login.html', []), false);

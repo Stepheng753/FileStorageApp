@@ -1,19 +1,22 @@
-function makeHeader(mainDir = './', signout = false, goBackFunc = false, register = false) {
+function makeHeader(mainDir = './', signoutFunc = false, goBackFunc = false, registerFunc = false) {
 	let bodyContainer = document.querySelector('.body-container');
 	let backClicks;
-	if (signout || goBackFunc || register) {
+	if (signoutFunc || goBackFunc || registerFunc) {
 		backClicks = document.createElement('div');
 		backClicks.className = 'back-clicks';
-		if (signout) {
+		if (signoutFunc) {
+			if (signoutFunc === true) {
+				signoutFunc = () => redirect('../index.html', []);
+			}
 			let h3 = document.createElement('h3');
 			h3.className = 'h3';
-			h3.onclick = () => (window.location.href = '../index.html');
+			h3.onclick = signoutFunc;
 			h3.textContent = 'Sign Out';
 			backClicks.appendChild(h3);
 		}
 		if (goBackFunc) {
 			if (goBackFunc === true) {
-				goBackFunc = () => (window.location.href = '../');
+				goBackFunc = () => redirect('../home/home.html');
 			}
 			let h3 = document.createElement('h3');
 			h3.className = 'h3';
@@ -21,10 +24,13 @@ function makeHeader(mainDir = './', signout = false, goBackFunc = false, registe
 			h3.textContent = 'Go Back';
 			backClicks.appendChild(h3);
 		}
-		if (register) {
+		if (registerFunc) {
+			if (registerFunc === true) {
+				registerFunc = () => redirect('../register/register.html', []);
+			}
 			let h3 = document.createElement('h3');
 			h3.className = 'h3';
-			h3.onclick = () => (window.location.href = '../register/register.html');
+			h3.onclick = registerFunc;
 			h3.textContent = 'Register';
 			backClicks.appendChild(h3);
 		}
