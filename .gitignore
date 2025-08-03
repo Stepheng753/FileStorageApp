@@ -3,5 +3,5 @@ users.db
 .devdbrc
 venv
 Backend/static/*
-.toothmanagervps.credentials
-sshServer.sh
+*.credentials
+*.sh
