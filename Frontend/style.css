@@ -1,3 +1,11 @@
+:root {
+	--button-color: #007bff;
+	--danger-color: #dc3545;
+	--green-color: #009688;
+	--background-color: #f0f0f0;
+	--container-color: #fff;
+}
+
 .body {
 	display: flex;
 	flex-direction: column;
@@ -89,7 +97,7 @@
 }
 
 .row-boxes {
-	grid-column-gap: 10px;
+	grid-column-gap: 20px;
 	grid-row-gap: 10px;
 	justify-content: space-between;
 	align-items: center;
@@ -154,4 +162,45 @@
 	margin-bottom: 0;
 	font-size: 22px;
 	display: flex;
+}
+
+form {
+	max-width: 500px;
+}
+
+input {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid black;
+	border-radius: 5px;
+	box-sizing: border-box;
+}
+
+button {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: 600;
+
+	background-color: var(--button-color);
+	background-image: linear-gradient(var(--green-color), var(--green-color));
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	background-size: 0% 100%;
+	transition: all 0.25s;
+}
+
+button:hover {
+	background-size: 100% 100%;
+	scale: 1.025;
+}
+button:disabled {
+	background-color: var(--green-color);
+	cursor: not-allowed;
 }

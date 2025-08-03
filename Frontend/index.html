@@ -6,31 +6,14 @@
 		<link rel="icon" href="./assets/3.png" />
 		<link rel="stylesheet" href="style.css" />
 		<script src="./globalHead.js" type="text/javascript"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 		<title>Tooth Manager</title>
 	</head>
 	<body class="body">
 		<div class="body-container">
-			<section class="header">
-				<div class="title-container">
-					<img src="./assets/tooth.png" loading="lazy" alt="" class="image darker" />
-					<h1 class="h1 darker">Tooth Manager</h1>
-				</div>
-			</section>
 			<section class="main-container">
 				<div class="container">
 					<div class="row-boxes">
-						<div
-							class="pretty-box"
-							id="register-box"
-							onclick="window.location.href = './register/register.html'"
-						>
-							<div class="icon-container">
-								<img src="./assets/hr.png" loading="lazy" alt="" class="image" />
-							</div>
-							<div class="box-title">
-								<h2 class="h2">Register</h2>
-							</div>
-						</div>
 						<div class="pretty-box" id="login-box" onclick="window.location.href = './login/login.html'">
 							<div class="icon-container">
 								<img src="./assets/hr.png" loading="lazy" alt="" class="image" />
@@ -39,18 +22,13 @@
 								<h2 class="h2">Login</h2>
 							</div>
 						</div>
-						<div class="pretty-box" id="login-box" onclick="window.location.href = './home/home.html'">
-							<div class="icon-container">
-								<img src="./assets/hr.png" loading="lazy" alt="" class="image" />
-							</div>
-							<div class="box-title">
-								<h2 class="h2">Home</h2>
-							</div>
-						</div>
 					</div>
 				</div>
 			</section>
 		</div>
 		<script src="./globalBody.js" type="text/javascript"></script>
+		<script>
+			makeHeader();
+		</script>
 	</body>
 </html>

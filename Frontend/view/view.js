@@ -1,13 +1,14 @@
-const FILES_DIR = backendURL + '/static/';
+const FILES_DIR = backendUrl + '/static/';
 let folders;
 let goBackFunc;
 
 function getFolders() {
-	fetch(backendURL + '/download_files', { method: 'POST' })
+	fetch(backendUrl + '/download_files', { method: 'POST' })
 		.then((res) => res.json())
 		.then((data) => {
 			folders = data;
 			showFolders();
+			makeHeader('../', true, goBackFunc);
 		});
 }
 
@@ -32,6 +33,7 @@ function showFolders() {
 	goBackFunc = () => {
 		window.location.href = '../home/home.html';
 	};
+	makeHeader('../', true, goBackFunc);
 }
 
 function showFiles(folder, file_list) {
@@ -59,6 +61,7 @@ function showFiles(folder, file_list) {
 		removeAllChildNodes(document.querySelector('.container'));
 		showFolders();
 	};
+	makeHeader('../', true, goBackFunc);
 }
 
 getFolders();
