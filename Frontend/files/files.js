@@ -115,12 +115,11 @@ function deleteFile(folder, file) {
 		fetch(backendUrl + '/delete_file', { method: 'POST', body: formData })
 			.then((res) => res.json())
 			.then((data) => {
-				if (data.STATUS === 'SUCCESS') {
-					window.location.reload();
-				} else {
+				if (data.STATUS != 'SUCCESS') {
 					alert('Error: ' + data.ERROR);
 				}
 			});
+		window.location.reload();
 	}
 }
 
