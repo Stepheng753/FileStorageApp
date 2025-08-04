@@ -71,7 +71,8 @@ function makeRowBoxes(prettyBoxesList) {
 		let prettyBox = makePrettyBox(
 			prettyBoxesList[i].image_url,
 			prettyBoxesList[i].title,
-			prettyBoxesList[i].clickHandler
+			prettyBoxesList[i].clickHandler,
+			prettyBoxesList[i].style ? prettyBoxesList[i].style : false
 		);
 		rowBoxes.appendChild(prettyBox);
 	}
@@ -80,7 +81,7 @@ function makeRowBoxes(prettyBoxesList) {
 	container.appendChild(rowBoxes);
 }
 
-function makePrettyBox(image_url, title, clickHandler) {
+function makePrettyBox(image_url, title, clickHandler, style = false) {
 	let prettyBox = document.createElement('div');
 	prettyBox.className = 'pretty-box';
 
@@ -107,6 +108,10 @@ function makePrettyBox(image_url, title, clickHandler) {
 
 	prettyBox.appendChild(icon_container);
 	prettyBox.appendChild(boxTitle);
+
+	if (style) {
+		Object.assign(prettyBox.style, style);
+	}
 
 	return prettyBox;
 }

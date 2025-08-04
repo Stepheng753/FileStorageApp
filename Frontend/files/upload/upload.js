@@ -26,9 +26,13 @@ function uploadFormEventHandler() {
 	});
 }
 
-uploadFormEventHandler();
-makeHeader(
-	'../../',
-	() => redirect('../../index.html'),
-	() => redirect('../files.html')
-);
+if (getPermission() != 1) {
+	redirect('../../index.html', false);
+} else {
+	uploadFormEventHandler();
+	makeHeader(
+		'../../',
+		() => redirect('../../index.html'),
+		() => redirect('../files.html')
+	);
+}

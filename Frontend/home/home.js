@@ -19,6 +19,11 @@ function showOptions() {
 		makeRowBoxes([manageUsersBox, filesBox]);
 	} else if (getPermission() == 2) {
 		makeRowBoxes([filesBox]);
+	} else {
+		let h2 = document.createElement('h2');
+		h2.textContent = 'Please wait for approval to access files ⏰';
+		h2.style.textAlign = 'center';
+		document.querySelector('.container').appendChild(h2);
 	}
 }
 

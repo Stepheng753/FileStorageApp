@@ -25,7 +25,6 @@ def create_users_database():
     except sqlite3.Error as e:
         print(e)
         print("DATABASE CREATED: FAILURE")
-        conn.close()
         return False
 
     return True
@@ -72,7 +71,6 @@ def get_user_entry(username):
     except (sqlite3.Error, Exception) as e:
         print(e)
         print("USER SELECTED: FAILURE")
-        conn.close()
         return False
 
     return user

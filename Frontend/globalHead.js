@@ -1,5 +1,5 @@
-const backendUrl = 'http://127.0.0.1:3000/';
-let key = '03022000';
+const backendUrl = 'https://dev.toothmanager.com';
+let key = new Date().getDay().toString();
 let lastMouseDown = 0;
 let timeout;
 
@@ -23,7 +23,6 @@ function getParam(paramTxt = 'user') {
 }
 
 function redirect(toUrl, paramSearchIndices = ['user', 'permission'], additionalParams = false) {
-	let params = window.location.search.substring(1);
 	if (paramSearchIndices.length > 0) {
 		toUrl += '?';
 		for (let i = 0; i < paramSearchIndices.length; i++) {

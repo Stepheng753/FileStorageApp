@@ -5,35 +5,52 @@ This is an app that will allow users to login, upload, and view specific files.
 ## Frontend Components
 
 -   Register Page ✅
-
 -   Login Page ✅
-
 -   Upload Page ✅
-
 -   View Page ✅
-
 -   Manage Users Page ✅
 
 ## Backend Components
 
 -   Users (Login / Register) ✅
-
 -   Upload (Save to "Files" Directory) ✅
-
 -   Files ✅
-
 -   Database (Create, Insert, Get, Delete) ✅
 
--   Secure Authentication ❌
+## Running the Backend
 
-## Running BackEnd
+1. Navigate to the backend directory:
+    ```
+    cd FileStorageApp/Backend
+    ```
+2. (Optional) Create and activate a virtual environment:
+    ```
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
+3. Install dependencies:
+    ```
+    pip install Flask Flask-Cors
+    ```
+4. Run the backend server:
+    ```
+    ./app.py
+    ```
 
-To run the BackEnd, execute the following commands in your terminal:
+## Running the Frontend
 
-`cd FileStorageApp/BackEnd` # Navigate into the FileStorageApp BackEnd project directory
+Open the desired HTML file in your browser from the `Frontend` directory, for example:
 
-`source venv/bin/activate` # Activate the virtual environment
+-   `index.html`
+-   `login/login.html`
+-   `register/register.html`
+-   `home/home.html`
+-   `files/files.html`
+-   `manage-users/manage-users.html`
 
-`pip install Flask Flask-Cors` # Install Flask on First Run
+## Notes
 
-`./app.py` # Turn the BackEnd server on
+-   Backend runs on port 3000 by default.
+-   Static files are served from the `static/` directory.
+-   Authentication is basic and not suitable for production use.
+-   Make sure the backend is running before using the frontend.

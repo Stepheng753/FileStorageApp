@@ -21,7 +21,6 @@ def upload_file():
         filename = folder + '/' + file.filename
         filepath = os.path.join(FILES_PATH, filename)
         file.save(filepath)
-        file_url = url_for('static', filename=filename, _external=True)
         return {'STATUS': 'SUCCESS'}
 
     return  {'STATUS': 'FAILURE'}

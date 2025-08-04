@@ -15,10 +15,11 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	margin-bottom: 200px;
 }
 
 #delete-btn {
-	background-color: var(--danger-color);
+	background-color: var(--burly-wood);
 	margin-top: 50px;
 }
 

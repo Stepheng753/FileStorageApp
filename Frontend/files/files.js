@@ -2,6 +2,7 @@ const FILES_DIR = backendUrl + '/static/';
 let currFolder = '';
 let folders;
 let deleteMode = false;
+let prevColors = [];
 
 function goBackFunc() {
 	if (currFolder.length == 0 && getPermission() == 1) {
@@ -43,6 +44,9 @@ function showFiles(folder_info) {
 							window.open(FILES_DIR + currFolder + '/' + file, '_blank');
 						}
 					},
+					style: {
+						backgroundColor: 'var(--burly-wood)',
+					},
 				});
 			}
 		} else {
@@ -69,6 +73,12 @@ function showFiles(folder_info) {
 	if (prettyBoxesList.length > 0) {
 		makeRowBoxes(prettyBoxesList);
 	}
+
+	let prettyBoxes = document.querySelectorAll('.pretty-box');
+	prevColors = [];
+	prettyBoxes.forEach((el) => {
+		prevColors.push(getComputedStyle(el).backgroundColor);
+	});
 }
 
 function uploadBtnRedirect() {
@@ -85,6 +95,14 @@ function deleteBtnClick() {
 	deleteBtn.addEventListener('click', (event) => {
 		event.preventDefault();
 		deleteMode = !deleteMode;
+		let prettyBoxes = document.querySelectorAll('.pretty-box');
+		for (let i = 0; i < prettyBoxes.length; i++) {
+			if (deleteMode) {
+				prettyBoxes[i].style.backgroundColor = 'var(--dark-sea-green)';
+			} else {
+				prettyBoxes[i].style.backgroundColor = prevColors[i];
+			}
+		}
 	});
 }
 
@@ -106,7 +124,19 @@ function deleteFile(folder, file) {
 	}
 }
 
-getFolders();
-uploadBtnRedirect();
-deleteBtnClick();
-makeHeader('../', true, getPermission() == 1 ? goBackFunc : false);
+function showEditBtns() {
+	if (getPermission() != 1) {
+		let fileBtns = document.querySelector('.floating-btn');
+		fileBtns.style.display = 'none';
+	}
+}
+
+if (getPermission() == 1 || getPermission() == 2) {
+	getFolders();
+	uploadBtnRedirect();
+	deleteBtnClick();
+	showEditBtns();
+	makeHeader('../', true, getPermission() == 1 ? goBackFunc : false);
+} else {
+	redirect('../index.html', false);
+}

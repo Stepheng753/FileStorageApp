@@ -94,13 +94,17 @@ function changeEditTitles() {
 	editPermissionTitle.innerText = 'Change Permission for User: ' + decrypt(getParam('userTo'));
 }
 
-changePassEventHandler();
-changePermissionEventHandler();
-deleteUser();
-setDefaultPermissionVal();
-changeEditTitles();
-makeHeader(
-	'../../',
-	() => redirect('../../index.html'),
-	() => redirect('../manage-users.html')
-);
+if (getPermission() != 1) {
+	redirect('../../index.html', false);
+} else {
+	changePassEventHandler();
+	changePermissionEventHandler();
+	deleteUser();
+	setDefaultPermissionVal();
+	changeEditTitles();
+	makeHeader(
+		'../../',
+		() => redirect('../../index.html'),
+		() => redirect('../manage-users.html')
+	);
+}
