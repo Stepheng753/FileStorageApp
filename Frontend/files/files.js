@@ -36,7 +36,7 @@ function showFiles(folder_info) {
 				let file = folder_info['files'][i];
 				prettyBoxesList.push({
 					image_url: '../assets/view.png',
-					title: toTitleCase(file),
+					title: file,
 					clickHandler: () => {
 						if (deleteMode) {
 							deleteFile('.' + currFolder, file);
@@ -52,7 +52,7 @@ function showFiles(folder_info) {
 		} else {
 			prettyBoxesList.push({
 				image_url: '../assets/folder.png',
-				title: toTitleCase(key),
+				title: key,
 				clickHandler: () => {
 					currFolder += '/' + key;
 					if (deleteMode) {
