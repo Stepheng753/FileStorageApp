@@ -53,23 +53,24 @@ function deleteUser() {
 
 	deleteButton.addEventListener('click', (event) => {
 		event.preventDefault();
+		if (confirm(`Are you sure you want to delete this User?`)) {
+			const formData = new FormData();
+			formData.append('username', decrypt(getParam('userTo')));
 
-		const formData = new FormData();
-		formData.append('username', decrypt(getParam('userTo')));
-
-		fetch(backendUrl + '/delete_user', {
-			method: 'POST',
-			body: formData,
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.STATUS == 'SUCCESS') {
-					redirect('../../home/home.html');
-				} else {
-					alert('Error: ' + data.ERROR);
-				}
+			fetch(backendUrl + '/delete_user', {
+				method: 'POST',
+				body: formData,
 			})
-			.catch((error) => console.log('Error: ', error));
+				.then((res) => res.json())
+				.then((data) => {
+					if (data.STATUS == 'SUCCESS') {
+						redirect('../../home/home.html');
+					} else {
+						alert('Error: ' + data.ERROR);
+					}
+				})
+				.catch((error) => console.log('Error: ', error));
+		}
 	});
 }
 

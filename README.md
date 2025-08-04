@@ -30,7 +30,7 @@ This is an app that will allow users to login, upload, and view specific files.
     ```
 3. Install dependencies:
     ```
-    pip install Flask Flask-Cors
+    pip install Flask Flask-Cors gunicorn
     ```
 4. Run the backend server:
     ```

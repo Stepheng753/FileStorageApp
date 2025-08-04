@@ -116,7 +116,7 @@ function deleteFile(folder, file) {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.STATUS === 'SUCCESS') {
-					goBackFunc();
+					window.location.reload();
 				} else {
 					alert('Error: ' + data.ERROR);
 				}
