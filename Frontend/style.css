@@ -40,6 +40,7 @@
 	display: flex;
 	flex-direction: column;
 	grid-row-gap: 5px;
+	z-index: 100;
 }
 
 .h3 {
@@ -57,14 +58,11 @@
 	justify-content: center;
 	align-items: center;
 	height: 100%;
+	width: 100%;
 	padding-top: 20px;
 	padding-bottom: 20px;
 	transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 	display: flex;
-}
-
-.title-container:hover {
-	transform: scale(1.05);
 }
 
 .h1 {
@@ -74,6 +72,10 @@
 
 .h1.darker {
 	text-shadow: 1px 2px 3px #0c0c0c59;
+}
+
+.header-title {
+	font-size: 50pt;
 }
 
 .main-container {
@@ -123,7 +125,6 @@
 
 .pretty-box:hover {
 	color: #000c;
-	background-color: #add097;
 	transform: rotate(1deg) scale(1.05);
 }
 

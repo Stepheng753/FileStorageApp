@@ -13,7 +13,7 @@ function registerFormEventHandler() {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.STATUS == 'SUCCESS') {
-					window.location.href = '../login/login.html';
+					window.location.href = '../login.html';
 				} else {
 					alert('Error: ' + data.ERROR);
 				}
@@ -23,4 +23,4 @@ function registerFormEventHandler() {
 }
 
 registerFormEventHandler();
-makeHeader('../', false, () => redirect('../login/login.html', []), false);
+makeHeader('../../', false, () => redirect('../login.html', []), false);

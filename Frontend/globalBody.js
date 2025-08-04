@@ -26,7 +26,7 @@ function makeHeader(mainDir = './', signoutFunc = false, goBackFunc = false, reg
 		}
 		if (registerFunc) {
 			if (registerFunc === true) {
-				registerFunc = () => redirect('../register/register.html', []);
+				registerFunc = () => redirect('./register/register.html', []);
 			}
 			let h3 = document.createElement('h3');
 			h3.className = 'h3';
@@ -42,16 +42,11 @@ function makeHeader(mainDir = './', signoutFunc = false, goBackFunc = false, reg
 	section.className = 'header';
 	let titleContainer = document.createElement('div');
 	titleContainer.className = 'title-container';
-	let img = document.createElement('img');
-	img.classList.add('image');
-	img.classList.add('darker');
-	img.loading = 'lazy';
-	img.src = mainDir + './assets/tooth.png';
 	let h1 = document.createElement('h1');
 	h1.classList.add('h1');
 	h1.classList.add('darker');
+	h1.classList.add('header-title');
 	h1.textContent = 'Tooth Manager';
-	titleContainer.appendChild(img);
 	titleContainer.appendChild(h1);
 	if (backClicks) {
 		section.appendChild(backClicks);

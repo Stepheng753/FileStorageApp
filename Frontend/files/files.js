@@ -47,12 +47,16 @@ function showFiles(folder_info) {
 			}
 		} else {
 			prettyBoxesList.push({
-				image_url: '../assets/view.png',
+				image_url: '../assets/folder.png',
 				title: toTitleCase(key),
 				clickHandler: () => {
 					currFolder += '/' + key;
-					showFiles(folder_info[key]);
-					makeHeader('../', true, goBackFunc);
+					if (deleteMode) {
+						deleteFile('.' + currFolder, '');
+					} else {
+						showFiles(folder_info[key]);
+						makeHeader('../', true, goBackFunc);
+					}
 				},
 			});
 		}
@@ -85,7 +89,8 @@ function deleteBtnClick() {
 }
 
 function deleteFile(folder, file) {
-	if (confirm('Are you sure you want to delete this file?')) {
+	let fileFolderStr = file.length > 0 ? 'file' : 'folder';
+	if (confirm(`Are you sure you want to delete this ${fileFolderStr}?`)) {
 		const formData = new FormData();
 		formData.append('folder', folder);
 		formData.append('file', file);

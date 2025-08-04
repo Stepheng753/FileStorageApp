@@ -1,5 +1,6 @@
 from flask import request, url_for
 import os
+import shutil
 from main import FILES_PATH
 
 def upload_file():
@@ -45,15 +46,18 @@ def delete_file():
     filepath = os.path.join(FILES_PATH, folder, filename)
 
     if os.path.exists(filepath):
-        os.remove(filepath)
-        # Recursively remove empty parent directories up to FILES_PATH
-        dir_to_check = os.path.join(FILES_PATH, folder)
-        while dir_to_check != FILES_PATH:
-            if not os.listdir(dir_to_check):
-                os.rmdir(dir_to_check)
-                dir_to_check = os.path.dirname(dir_to_check)
-            else:
-                break
+        if len(filename) > 0:
+            os.remove(filepath)
+            # Recursively remove empty parent directories up to FILES_PATH
+            dir_to_check = os.path.join(FILES_PATH, folder)
+            while dir_to_check != FILES_PATH:
+                if not os.listdir(dir_to_check):
+                    os.rmdir(dir_to_check)
+                    dir_to_check = os.path.dirname(dir_to_check)
+                else:
+                    break
+        else:
+            shutil.rmtree(filepath)
         return {'STATUS': 'SUCCESS'}
     else:
         return {'STATUS': 'FAILURE', 'ERROR': 'FILE NOT FOUND'}
