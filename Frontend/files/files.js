@@ -3,37 +3,27 @@ let currFolder = '';
 let folders;
 let deleteMode = false;
 
+function goBackFunc() {
+	if (currFolder.length == 0 && getPermission() == 1) {
+		redirect('../home/home.html');
+	} else {
+		removeAllChildNodes(document.querySelector('.container'));
+		currFolder = '';
+		showFiles(folders);
+		if (getPermission() != 1) {
+			let goBack = Array.from(document.querySelectorAll('h3.h3')).find((el) => el.textContent === 'Go Back');
+			goBack.remove();
+		}
+	}
+}
+
 function getFolders() {
 	fetch(backendUrl + '/download_files', { method: 'POST' })
 		.then((res) => res.json())
 		.then((data) => {
 			folders = data;
-			showFolders();
+			showFiles(folders);
 		});
-}
-
-function showFolders() {
-	let prettyBoxesList = [];
-	for (const folder in folders) {
-		if (folder.length > 0) {
-			prettyBoxesList.push({
-				image_url: '../assets/view.png',
-				title: toTitleCase(folder),
-				clickHandler: () => {
-					currFolder += '/' + folder;
-					showFiles(folders[folder]);
-				},
-			});
-			if (prettyBoxesList.length === 4) {
-				makeRowBoxes(prettyBoxesList);
-				prettyBoxesList = [];
-			}
-		}
-	}
-	if (prettyBoxesList.length > 0) {
-		makeRowBoxes(prettyBoxesList);
-	}
-	makeHeader('../', true, getPermission() == 1);
 }
 
 function showFiles(folder_info) {
@@ -62,6 +52,7 @@ function showFiles(folder_info) {
 				clickHandler: () => {
 					currFolder += '/' + key;
 					showFiles(folder_info[key]);
+					makeHeader('../', true, goBackFunc);
 				},
 			});
 		}
@@ -74,13 +65,6 @@ function showFiles(folder_info) {
 	if (prettyBoxesList.length > 0) {
 		makeRowBoxes(prettyBoxesList);
 	}
-
-	let goBackFunc = () => {
-		removeAllChildNodes(document.querySelector('.container'));
-		currFolder = '';
-		showFolders();
-	};
-	makeHeader('../', true, goBackFunc);
 }
 
 function uploadBtnRedirect() {
@@ -120,3 +104,4 @@ function deleteFile(folder, file) {
 getFolders();
 uploadBtnRedirect();
 deleteBtnClick();
+makeHeader('../', true, getPermission() == 1 ? goBackFunc : false);

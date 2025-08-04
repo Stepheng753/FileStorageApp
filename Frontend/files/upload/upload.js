@@ -11,8 +11,6 @@ function uploadFormEventHandler() {
 		const formData = new FormData(uploadForm);
 		formData.set('folder', '.' + decrypt(getParam('parentFolder')) + '/' + formData.get('folder'));
 
-		console.log(formData.get('folder'));
-
 		fetch(backendUrl + '/upload_file', {
 			method: 'POST',
 			body: formData,
