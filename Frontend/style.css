@@ -1,11 +1,15 @@
+@font-face {
+	font-family: 'Milky Way';
+	src: url('./assets/MilkywayDemo.ttf') format('truetype');
+}
+
 :root {
-	--danger-color: #dc3545;
-	--green-color: #009688;
-	--indian-red: #e9bbb5;
-	--burly-wood: #e7cba9;
-	--light-blue-steel: #aad9cd;
-	--light-khaki: #e8d595;
-	--dark-sea-green: #8da47e;
+	--danger-color: #e5d2c3;
+	--header: #eedfd5;
+	--background-main: #d4e6e6;
+	--pretty-box-secondary: #eeddcf;
+	--pretty-box-main: #8fd0c6;
+	--pretty-box-main-darker: #80c8bd;
 }
 
 .body {
@@ -14,20 +18,23 @@
 	align-items: center;
 	color: #333c;
 	text-align: center;
-	background-color: var(--light-blue-steel);
+	background-color: var(--background-main);
 }
 
 .body-container {
 	width: 1000px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .header {
-	width: 100%;
-	background-color: var(--indian-red);
+	width: 100vw;
+	background-color: var(--header);
 	border-radius: 5px;
 	justify-content: center;
 	align-items: center;
-	height: 175px;
+	height: 100px;
 	display: flex;
 	box-shadow: 0 2px 5px #0003;
 }
@@ -79,6 +86,7 @@
 
 .header-title {
 	font-size: 50pt;
+	font-family: 'Milky Way';
 }
 
 .main-container {
@@ -114,7 +122,7 @@
 
 .pretty-box {
 	cursor: pointer;
-	background-color: var(--light-khaki);
+	background-color: var(--pretty-box-main);
 	border-radius: 5px;
 	flex-flow: column;
 	justify-content: center;
@@ -194,7 +202,7 @@ button {
 	font-size: 16px;
 	font-weight: 600;
 
-	background-color: var(--light-khaki);
+	background-color: var(--pretty-box-main);
 }
 
 button:hover {

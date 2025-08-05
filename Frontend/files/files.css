@@ -12,11 +12,11 @@
 }
 
 #delete-file {
-	background-color: var(--dark-sea-green);
+	background-color: var(--danger-color);
 	bottom: 80px;
 }
 
 #new-folder {
-	background-color: var(--burly-wood);
+	background-color: var(--pretty-box-main-darker);
 	bottom: 20px;
 }

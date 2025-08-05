@@ -29,6 +29,11 @@ function getFolders() {
 
 function showFiles(folder_info) {
 	removeAllChildNodes(document.querySelector('.container'));
+	let h2 = document.createElement('h2');
+	h2.className = 'h2';
+	h2.textContent = currFolder.split('/').at(1);
+	document.querySelector('.container').appendChild(h2);
+
 	let prettyBoxesList = [];
 	Object.keys(folder_info).forEach((key) => {
 		if (key == 'files') {
@@ -45,7 +50,7 @@ function showFiles(folder_info) {
 						}
 					},
 					style: {
-						backgroundColor: 'var(--burly-wood)',
+						backgroundColor: 'var(--pretty-box-secondary)',
 					},
 				});
 			}
@@ -64,15 +69,12 @@ function showFiles(folder_info) {
 				},
 			});
 		}
+
 		if (prettyBoxesList.length === 4) {
 			makeRowBoxes(prettyBoxesList);
 			prettyBoxesList = [];
 		}
 	});
-
-	if (prettyBoxesList.length > 0) {
-		makeRowBoxes(prettyBoxesList);
-	}
 
 	let prettyBoxes = document.querySelectorAll('.pretty-box');
 	prevColors = [];
@@ -98,7 +100,7 @@ function deleteBtnClick() {
 		let prettyBoxes = document.querySelectorAll('.pretty-box');
 		for (let i = 0; i < prettyBoxes.length; i++) {
 			if (deleteMode) {
-				prettyBoxes[i].style.backgroundColor = 'var(--dark-sea-green)';
+				prettyBoxes[i].style.backgroundColor = 'var(--danger-color)';
 			} else {
 				prettyBoxes[i].style.backgroundColor = prevColors[i];
 			}
