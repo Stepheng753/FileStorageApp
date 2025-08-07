@@ -31,7 +31,12 @@ function showFiles(folder_info) {
 	removeAllChildNodes(document.querySelector('.container'));
 	let h2 = document.createElement('h2');
 	h2.className = 'h2';
-	h2.textContent = currFolder.split('/').at(1);
+	let folderArr = currFolder.split('/');
+	if (folderArr.length > 2) {
+		h2.innerHTML = folderArr.at(1) + '<br />' + folderArr.at(2);
+	} else if (folderArr.length == 2) {
+		h2.innerHTML = folderArr.at(1);
+	}
 	document.querySelector('.container').appendChild(h2);
 
 	let prettyBoxesList = [];
