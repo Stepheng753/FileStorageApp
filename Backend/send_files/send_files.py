@@ -35,6 +35,7 @@ def get_folder_dict(path):
             folder_dict.setdefault('files', []).append(entry.name)
     return folder_dict
 
+
 def download_files():
     return get_folder_dict(FILES_PATH)
 
@@ -47,14 +48,6 @@ def delete_file():
     if os.path.exists(filepath):
         if len(filename) > 0:
             os.remove(filepath)
-            # Recursively remove empty parent directories up to FILES_PATH
-            dir_to_check = os.path.join(FILES_PATH, folder)
-            while dir_to_check != FILES_PATH:
-                if not os.listdir(dir_to_check):
-                    os.rmdir(dir_to_check)
-                    dir_to_check = os.path.dirname(dir_to_check)
-                else:
-                    break
         else:
             shutil.rmtree(filepath)
         return {'STATUS': 'SUCCESS'}
