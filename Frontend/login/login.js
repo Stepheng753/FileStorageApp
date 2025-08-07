@@ -31,4 +31,4 @@ function loginFormEventHandler() {
 
 loginFormEventHandler();
 
-makeHeader('../', false, () => redirect('../', []), true);
+makeHeader(false, () => redirect('../', []), true);

@@ -10,8 +10,9 @@ def upload_file():
     file = request.files['file']
     folder = request.form['folder']
 
-    if file.filename == '':
-        return {'STATUS': 'FAILURE', 'ERROR': 'NO SELECTED FILE'}
+    if not file or file.filename == '':
+        os.makedirs(os.path.join(FILES_PATH, folder), exist_ok=True)
+        return {'STATUS': 'SUCCESS'}
     if folder == '':
         return {'STATUS': 'FAILURE', 'ERROR': 'No SELECTED FOLDER'}
 

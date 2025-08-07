@@ -104,7 +104,6 @@ if (getPermission() != 1) {
 	setDefaultPermissionVal();
 	changeEditTitles();
 	makeHeader(
-		'../../',
 		() => redirect('../../index.html'),
 		() => redirect('../manage-users.html')
 	);

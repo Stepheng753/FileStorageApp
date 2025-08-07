@@ -1,4 +1,4 @@
-function makeHeader(mainDir = './', signoutFunc = false, goBackFunc = false, registerFunc = false) {
+function makeHeader(signoutFunc = false, goBackFunc = false, registerFunc = false) {
 	let bodyContainer = document.querySelector('.body-container');
 	let backClicks;
 	if (signoutFunc || goBackFunc || registerFunc) {

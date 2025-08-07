@@ -69,7 +69,7 @@ function showFiles(folder_info) {
 					} else {
 						currFolder += '/' + key;
 						showFiles(folder_info[key]);
-						makeHeader('../', true, goBackFunc);
+						makeHeader(true, goBackFunc);
 					}
 				},
 			});
@@ -147,7 +147,7 @@ if (getPermission() == 1 || getPermission() == 2) {
 	uploadBtnRedirect();
 	deleteBtnClick();
 	showEditBtns();
-	makeHeader('../', true, getPermission() == 1 ? goBackFunc : false);
+	makeHeader(true, getPermission() == 1 ? goBackFunc : false);
 } else {
 	redirect('../index.html', false);
 }

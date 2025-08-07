@@ -66,5 +66,5 @@ if (getPermission() != 1) {
 	redirect('../index.html', false);
 } else {
 	getAllUsers();
-	makeHeader('../', true, true);
+	makeHeader(true, true);
 }

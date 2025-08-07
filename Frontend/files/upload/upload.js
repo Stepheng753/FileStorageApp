@@ -31,7 +31,6 @@ if (getPermission() != 1) {
 } else {
 	uploadFormEventHandler();
 	makeHeader(
-		'../../',
 		() => redirect('../../index.html'),
 		() => redirect('../files.html')
 	);

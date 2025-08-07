@@ -27,5 +27,5 @@ function showOptions() {
 	}
 }
 
-makeHeader('../', true, false, false);
+makeHeader(true, false, false);
 showOptions();
