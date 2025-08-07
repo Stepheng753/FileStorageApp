@@ -76,6 +76,10 @@ function showFiles(folder_info) {
 		}
 	});
 
+	if (prettyBoxesList.length > 0) {
+		makeRowBoxes(prettyBoxesList);
+	}
+
 	let prettyBoxes = document.querySelectorAll('.pretty-box');
 	prevColors = [];
 	prettyBoxes.forEach((el) => {
@@ -105,6 +109,7 @@ function deleteBtnClick() {
 				prettyBoxes[i].style.backgroundColor = prevColors[i];
 			}
 		}
+		currFolder = '';
 	});
 }
 

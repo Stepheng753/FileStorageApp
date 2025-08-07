@@ -12,7 +12,7 @@
 }
 
 #delete-file {
-	background-color: var(--danger-color);
+	background-color: var(--pretty-box-secondary);
 	bottom: 80px;
 }
 
