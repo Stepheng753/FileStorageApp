@@ -64,10 +64,10 @@ function showFiles(folder_info) {
 				image_url: '../assets/folder.png',
 				title: key,
 				clickHandler: () => {
-					currFolder += '/' + key;
 					if (deleteMode) {
-						deleteFile('.' + currFolder, '');
+						deleteFile('.' + currFolder + '/' + key, '');
 					} else {
+						currFolder += '/' + key;
 						showFiles(folder_info[key]);
 						makeHeader('../', true, goBackFunc);
 					}
@@ -114,7 +114,6 @@ function deleteBtnClick() {
 				prettyBoxes[i].style.backgroundColor = prevColors[i];
 			}
 		}
-		currFolder = '';
 	});
 }
 
@@ -132,6 +131,7 @@ function deleteFile(folder, file) {
 				}
 			});
 		window.location.reload();
+	} else {
 	}
 }
 
