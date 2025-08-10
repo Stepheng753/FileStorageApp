@@ -51,16 +51,7 @@ function showFiles(folder_info) {
 						if (deleteMode) {
 							deleteFile('.' + currFolder, file);
 						} else {
-							if (file.toLowerCase().endsWith('.pdf')) {
-								window.open(FILES_DIR + currFolder + '/' + file, '_blank');
-							} else {
-								const link = document.createElement('a');
-								link.href = FILES_DIR + currFolder + '/' + file;
-								link.download = file;
-								document.body.appendChild(link);
-								link.click();
-								document.body.removeChild(link);
-							}
+							handleFileOpen(file);
 						}
 					},
 					style: {
@@ -144,6 +135,40 @@ function showEditBtns() {
 	if (getPermission() != 1) {
 		let fileBtns = document.querySelector('.floating-btn');
 		fileBtns.style.display = 'none';
+	}
+}
+
+function handleFileOpen(file) {
+	const viewableExts = [
+		'.pdf',
+		'.html',
+		'.htm',
+		'.txt',
+		'.jpg',
+		'.jpeg',
+		'.png',
+		'.gif',
+		'.webp',
+		'.svg',
+		'.mp4',
+		'.webm',
+		'.mp3',
+		'.wav',
+		'.json',
+		'.csv',
+		'.xml',
+	];
+	const fileUrl = FILES_DIR + currFolder + '/' + file;
+	const ext = file.toLowerCase().substring(file.lastIndexOf('.'));
+	if (viewableExts.includes(ext)) {
+		window.open(fileUrl, '_blank');
+	} else {
+		const link = document.createElement('a');
+		link.href = fileUrl;
+		link.download = file;
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
 	}
 }
 
