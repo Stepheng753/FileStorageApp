@@ -8,6 +8,8 @@ from send_files.send_files import *
 
 app = Flask(__name__, static_folder="static")
 app.config['PREFERRED_URL_SCHEME'] = 'https'
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SERVER_NAME'] = 'dev.toothmanager.com'
 CORS(app)
 
 # Set the maximum content length to 32 MB (32 * 1024 * 1024 bytes)
