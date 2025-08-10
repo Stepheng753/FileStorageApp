@@ -12,8 +12,8 @@ app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SERVER_NAME'] = 'dev.toothmanager.com'
 CORS(app)
 
-# Set the maximum content length to 32 MB (32 * 1024 * 1024 bytes)
-app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024
+# Set the maximum content length to 1 GB (1024 * 1024 * 1024 bytes)
+app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 * 1024
 
 @app.before_request
 def before_request():
