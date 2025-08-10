@@ -9,6 +9,9 @@ from send_files.send_files import *
 app = Flask(__name__, static_folder="static")
 CORS(app)
 
+# Set the maximum content length to 32 MB (32 * 1024 * 1024 bytes)
+app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024
+
 @app.before_request
 def before_request():
     headers = {'Access-Control-Allow-Origin': '*',
