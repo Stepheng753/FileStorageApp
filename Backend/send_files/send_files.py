@@ -4,9 +4,6 @@ import shutil
 from main import FILES_PATH
 
 def upload_file():
-    if 'file' not in request.files:
-        return {'STATUS': 'FAILURE', 'ERROR': 'NO FILE PROVIDED'}
-
     folder = request.form['folder']
     if folder == '':
         return {'STATUS': 'FAILURE', 'ERROR': 'No SELECTED FOLDER'}
