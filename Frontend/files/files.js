@@ -74,15 +74,11 @@ function showFiles(folder_info) {
 				},
 			});
 		}
-
-		if (prettyBoxesList.length === 4) {
-			makeRowBoxes(prettyBoxesList);
-			prettyBoxesList = [];
-		}
 	});
 
-	if (prettyBoxesList.length > 0) {
-		makeRowBoxes(prettyBoxesList);
+	// Group prettyBoxesList into sets of 4 for rowBoxes
+	for (let i = 0; i < prettyBoxesList.length; i += 4) {
+		makeRowBoxes(prettyBoxesList.slice(i, i + 4));
 	}
 
 	let prettyBoxes = document.querySelectorAll('.pretty-box');
