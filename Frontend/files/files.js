@@ -1,4 +1,4 @@
-const FILES_DIR = backendUrl + '/static/';
+const FILES_DIR = backendUrl + '/static';
 let currFolder = '';
 let folders;
 let deleteMode = false;
