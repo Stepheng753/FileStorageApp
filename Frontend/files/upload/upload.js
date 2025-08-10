@@ -8,8 +8,14 @@ function uploadFormEventHandler() {
 		uploadBtn.innerText = 'Uploading...';
 		uploadBtn.disabled = true;
 
-		const formData = new FormData(uploadForm);
-		formData.set('folder', '.' + decrypt(getParam('parentFolder')) + '/' + formData.get('folder'));
+		const formData = new FormData();
+		const folderInput = uploadForm.querySelector('input[name="folder"]');
+		formData.set('folder', '.' + decrypt(getParam('parentFolder')) + '/' + folderInput.value);
+
+		const fileInput = uploadForm.querySelector('input[type="file"]');
+		for (const file of fileInput.files) {
+			formData.append('file', file);
+		}
 
 		fetch(backendUrl + '/upload_file', {
 			method: 'POST',

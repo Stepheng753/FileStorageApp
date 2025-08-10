@@ -7,24 +7,24 @@ def upload_file():
     if 'file' not in request.files:
         return {'STATUS': 'FAILURE', 'ERROR': 'NO FILE PROVIDED'}
 
-    file = request.files['file']
     folder = request.form['folder']
-
-    if not file or file.filename == '':
-        os.makedirs(os.path.join(FILES_PATH, folder), exist_ok=True)
-        return {'STATUS': 'SUCCESS'}
     if folder == '':
         return {'STATUS': 'FAILURE', 'ERROR': 'No SELECTED FOLDER'}
 
     os.makedirs(os.path.join(FILES_PATH, folder), exist_ok=True)
 
-    if file:
-        filename = folder + '/' + file.filename
-        filepath = os.path.join(FILES_PATH, filename)
-        file.save(filepath)
+    files = request.files.getlist('file')
+    if not files or all(f.filename == '' for f in files):
         return {'STATUS': 'SUCCESS'}
 
-    return  {'STATUS': 'FAILURE'}
+    print('Received files:', [f.filename for f in files])  # Debug log
+    for file in files:
+        if file and file.filename != '':
+            filename = folder + '/' + file.filename
+            filepath = os.path.join(FILES_PATH, filename)
+            file.save(filepath)
+
+    return {'STATUS': 'SUCCESS'}
 
 
 def get_folder_dict(path):
