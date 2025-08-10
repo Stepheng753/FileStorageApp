@@ -51,7 +51,16 @@ function showFiles(folder_info) {
 						if (deleteMode) {
 							deleteFile('.' + currFolder, file);
 						} else {
-							window.open(FILES_DIR + currFolder + '/' + file, '_blank');
+							if (file.toLowerCase().endsWith('.pdf')) {
+								window.open(FILES_DIR + currFolder + '/' + file, '_blank');
+							} else {
+								const link = document.createElement('a');
+								link.href = FILES_DIR + currFolder + '/' + file;
+								link.download = file;
+								document.body.appendChild(link);
+								link.click();
+								document.body.removeChild(link);
+							}
 						}
 					},
 					style: {
