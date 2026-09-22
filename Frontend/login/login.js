@@ -1,34 +1,42 @@
-function loginFormEventHandler() {
-	const loginForm = document.getElementById('login-form');
+document.addEventListener('DOMContentLoaded', () => {
+	// If already authenticated, redirect immediately
+	if (api.isAuthenticated()) {
+		const tier = api.getTier();
+		if (tier === 1 || tier === 2) {
+			window.location.replace('../files/files.html');
+			return;
+		} else {
+			window.location.replace('../home/home.html');
+			return;
+		}
+	}
 
-	loginForm.addEventListener('submit', (event) => {
-		event.preventDefault();
+	const form = document.getElementById('login-form');
+	const btn = document.getElementById('login-btn');
 
-		const formData = new FormData(loginForm);
+	form.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		const username = form.username.value.trim();
+		const password = form.password.value;
 
-		fetch(backendUrl + '/login', {
-			method: 'POST',
-			body: formData,
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.STATUS == 'SUCCESS') {
-					const userParam = 'user=' + encrypt(formData.get('username'));
-					const permissionParam = 'permission=' + encrypt(data.PERMISSION_TIER);
-					if (parseInt(data.PERMISSION_TIER) == 2) {
-						window.location.href = '../files/files.html?' + userParam + '&' + permissionParam;
-					} else {
-						window.location.href = '../home/home.html?' + userParam + '&' + permissionParam;
-					}
+		btn.disabled = true;
+		btn.innerHTML = 'Signing In...';
+
+		try {
+			const res = await api.login(username, password);
+			api.toast(`Welcome back, ${res.user.firstname || res.user.username}!`, 'success');
+
+			setTimeout(() => {
+				const tier = parseInt(res.user.permission_tier);
+				if (tier === 1 || tier === 2) {
+					window.location.href = '../files/files.html';
 				} else {
-					alert('Login failed. Please check your username and password.');
-					loginForm.reset();
+					window.location.href = '../home/home.html';
 				}
-			})
-			.catch((error) => console.log('Error: ', error));
+			}, 500);
+		} catch (err) {
+			btn.disabled = false;
+			btn.innerHTML = 'Sign In';
+		}
 	});
-}
-
-loginFormEventHandler();
-
-makeHeader(false, () => redirect('../', []), true);
+});

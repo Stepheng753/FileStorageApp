@@ -3,33 +3,35 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" href="./assets/3.png" />
-		<link rel="stylesheet" href="style.css" />
-		<script src="./globalHead.js" type="text/javascript"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-		<title>Tooth Manager</title>
+		<link rel="icon" href="./assets/tooth.png" />
+		<link rel="stylesheet" href="./css/style.css" />
+		<title>Tooth Manager - File Portal</title>
 	</head>
-	<body class="body">
-		<div class="body-container">
-			<section class="main-container">
-				<div class="container"></div>
-			</section>
+	<body>
+		<div class="auth-wrapper">
+			<div class="auth-card">
+				<img src="./assets/tooth.png" alt="Tooth Logo" class="auth-logo" />
+				<h1 class="auth-title">Tooth Manager</h1>
+				<p class="auth-subtitle">Dental Document & File Management Portal</p>
+				<div style="margin: 2rem 0; font-size: 0.95rem; color: var(--text-muted);">
+					Connecting to portal...
+				</div>
+			</div>
 		</div>
-		<script src="./globalBody.js" type="text/javascript"></script>
+
+		<script src="./js/api.js"></script>
 		<script>
-			makeHeader();
-			makeRowBoxes([
-				{
-					image_url: './assets/hr.png',
-					title: 'Login',
-					clickHandler: () => {
-						redirect('./login/login.html', []);
-					},
-				},
-			]);
-			let img = document.createElement('img');
-			img.src = './assets/floss.jpg';
-			document.querySelector('.container').appendChild(img);
+			// Seamless auto-redirect
+			if (api.isAuthenticated()) {
+				const tier = api.getTier();
+				if (tier === 1 || tier === 2) {
+					window.location.replace('./files/files.html');
+				} else {
+					window.location.replace('./home/home.html');
+				}
+			} else {
+				window.location.replace('./login/login.html');
+			}
 		</script>
 	</body>
 </html>

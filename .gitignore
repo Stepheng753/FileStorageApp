@@ -1,7 +1,41 @@
-__pycache__
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+env/
+venv/
+ENV/
+*.pytest_cache/
+.coverage
+htmlcov/
+.logs/
+*.log
+.run/
+*.pid
+
+# Database & Storage
+*.db
+*.sqlite3
 users.db
-.devdbrc
-.venv
+Backend/database/users.db
 Backend/static/*
+!Backend/static/.gitkeep
+data/
+
+# Secrets & Local Config
+Backend/secrets.json
+secrets.json
+.env
+.env.*
 *.credentials
 *.sh
+.devdbrc
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

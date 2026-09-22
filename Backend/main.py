@@ -1,7 +1,8 @@
+from core.config import DB_PATH, STORAGE_DIR
+
 PASSWORD_IDX = 4
 PERMISSION_IDX = 5
-DB_PATH = './database/users.db'
-FILES_PATH = 'static/'
+FILES_PATH = str(STORAGE_DIR)
 
 
 def index():

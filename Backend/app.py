@@ -1,42 +1,128 @@
 #!/usr/bin/env python3
+"""
+Tooth Manager - Backend Application
+Provides RESTful API for authentication, file storage management, and user administration.
+"""
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory, request, redirect
 from flask_cors import CORS
-from main import *
-from users.users import *
-from send_files.send_files import *
+from core.config import (
+    SECRET_KEY,
+    SERVER_NAME,
+    STORAGE_DIR,
+    CORS_ORIGINS,
+    MAX_CONTENT_LENGTH,
+    PORT
+)
+from database.db import init_db, auto_migrate_plaintext_passwords
+from api.health import health_bp
+from api.auth import auth_bp
+from api.files import files_bp
+from api.users import users_bp
+from api.docs import docs_bp, get_docs
 
-app = Flask(__name__, static_folder="static")
-app.config['PREFERRED_URL_SCHEME'] = 'https'
-app.config['SESSION_COOKIE_SECURE'] = True
-app.config['SERVER_NAME'] = 'dev.toothmanager.com'
-CORS(app)
 
-# Set the maximum content length to 1 GB (1024 * 1024 * 1024 bytes)
-app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 * 1024
+def create_app() -> Flask:
+    app = Flask(__name__, static_folder=str(STORAGE_DIR))
 
-@app.before_request
-def before_request():
-    headers = {'Access-Control-Allow-Origin': '*',
-               'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-               'Access-Control-Allow-Headers': 'Content-Type',
-               'Test-Header': 'Test-Value'}
-    if request.method.lower() == 'options':
-        return jsonify(headers), 200
+    # App configuration
+    app.config["SECRET_KEY"] = SECRET_KEY
+    app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH
+    if SERVER_NAME:
+        app.config["SERVER_NAME"] = SERVER_NAME
 
-app.add_url_rule("/", "index", index)
-app.add_url_rule("/login", "login", login, methods=["POST"])
-app.add_url_rule("/register", "register", register, methods=["POST"])
+    # Enable CORS
+    CORS(app, origins=CORS_ORIGINS, supports_credentials=True)
 
-app.add_url_rule("/upload_file", "upload_file", upload_file, methods=["POST"])
-app.add_url_rule("/download_files", "download_files", download_files, methods=["POST"])
-app.add_url_rule("/delete_file", "delete_file", delete_file, methods=["POST"])
+    # Initialize Database and check for migrations
+    init_db()
+    auto_migrate_plaintext_passwords()
 
-app.add_url_rule("/update_permission_tier", "update_permission_tier", update_permission_tier, methods=["POST"])
-app.add_url_rule("/update_password", "update_password", update_password, methods=["POST"])
-app.add_url_rule("/get_user", "get_user", get_user, methods=["POST"])
-app.add_url_rule("/get_all_users", "get_all_users", get_all_users, methods=["GET"])
-app.add_url_rule("/delete_user", "delete_user", delete_user, methods=["POST"])
+    # Register Modern RESTful Blueprints under /api
+    app.register_blueprint(health_bp, url_prefix="/api")
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    app.register_blueprint(files_bp, url_prefix="/api")
+    app.register_blueprint(users_bp, url_prefix="/api")
+    app.register_blueprint(docs_bp, url_prefix="/api")
 
-# if __name__ == "__main__":
-#     app.run('0.0.0.0', port=3000)
+    # Swagger Documentation at /docs
+    @app.route("/docs", methods=["GET"])
+    def serve_swagger_docs():
+        return get_docs()
+
+    # Static file serving route (especially useful for local development and Nginx fallback)
+    @app.route("/static/<path:filename>")
+    def serve_static(filename):
+        return send_from_directory(str(STORAGE_DIR), filename)
+
+    # Root index / ping
+    @app.route("/", methods=["GET"])
+    def root_index():
+        return jsonify({
+            "service": "Tooth Manager API",
+            "version": "2.0.0",
+            "status": "online",
+            "documentation": "/docs"
+        }), 200
+
+    # 404 handler
+    @app.errorhandler(404)
+    def not_found(e):
+        return jsonify({
+            "success": False,
+            "error": "The requested resource was not found on this server."
+        }), 404
+
+    # 413 handler (payload too large)
+    @app.errorhandler(413)
+    def request_entity_too_large(e):
+        return jsonify({
+            "success": False,
+            "error": "File size exceeds the 1 GB maximum upload limit."
+        }), 413
+
+    # 500 handler
+    @app.errorhandler(500)
+    def internal_error(e):
+        return jsonify({
+            "success": False,
+            "error": "An internal server error occurred."
+        }), 500
+
+    # --- Legacy Endpoint Compatibility Shims ---
+    from api.auth import login as api_login, register as api_register
+    from api.files import list_files as api_list_files, upload_files as api_upload_files, remove_item as api_remove_item
+    from api.users import list_all_users as api_list_all_users
+
+    @app.route("/login", methods=["POST"])
+    def legacy_login():
+        return api_login()
+
+    @app.route("/register", methods=["POST"])
+    def legacy_register():
+        return api_register()
+
+    @app.route("/download_files", methods=["GET", "POST"])
+    def legacy_download_files():
+        from core.storage import get_full_folder_tree
+        return jsonify(get_full_folder_tree())
+
+    @app.route("/upload_file", methods=["POST"])
+    def legacy_upload():
+        return api_upload_files()
+
+    @app.route("/delete_file", methods=["POST"])
+    def legacy_delete():
+        return api_remove_item()
+
+    @app.route("/get_all_users", methods=["GET"])
+    def legacy_users():
+        return api_list_all_users()
+
+    return app
+
+
+app = create_app()
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=PORT, debug=False)

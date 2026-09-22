@@ -4,32 +4,117 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" href="../assets/tooth.png" />
-		<link rel="stylesheet" href="../style.css" />
-		<link rel="stylesheet" href="./manage-users.css" />
-		<script src="../globalHead.js" type="text/javascript"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-		<title>Tooth Manager - User Manager</title>
+		<link rel="stylesheet" href="../css/style.css" />
+		<title>Tooth Manager - Staff & Access Control</title>
 	</head>
-	<body class="body">
-		<div class="body-container">
-			<section class="main-container">
-				<div class="container">
-					<h2>Manage Users</h2>
-					<div class="user-list">
-						<div class="user-item">
-							<div class="user-info">
-								<span class="name">Name</span>
-								<span class="username">Username</span>
-								<span class="password">Password</span>
-								<span class="permission-tier">Permission Tier</span>
-							</div>
-							<div class="edit-btn"></div>
-						</div>
+	<body>
+		<main class="main-wrapper">
+			<div class="table-card">
+				<div class="table-header-box">
+					<div>
+						<h2 class="table-title">Manage Practice Users</h2>
+						<p style="color: var(--text-secondary); font-size: 0.9rem;">
+							Authorize staff accounts, change permission tiers, and manage credentials
+						</p>
+					</div>
+
+					<div class="search-box">
+						<span class="search-icon">🔍</span>
+						<input
+							type="text"
+							id="user-search-input"
+							class="search-input"
+							placeholder="Search by name or username..."
+							autocomplete="off"
+						/>
 					</div>
 				</div>
-			</section>
+
+				<div style="overflow-x: auto;">
+					<table class="data-table">
+						<thead>
+							<tr>
+								<th>Staff Member</th>
+								<th>Username</th>
+								<th>Permission Tier</th>
+								<th>Account Created</th>
+								<th style="text-align: right;">Actions</th>
+							</tr>
+						</thead>
+						<tbody id="users-table-body">
+							<tr>
+								<td colspan="5" style="text-align: center; padding: 3rem;">Loading user roster...</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+
+		<!-- Change Permission Tier Modal -->
+		<div class="modal-overlay" id="tier-modal">
+			<div class="modal-box">
+				<div class="modal-header">
+					<h3 class="modal-title">Change Permission Tier</h3>
+					<button class="modal-close" id="tier-modal-close">&times;</button>
+				</div>
+				<form id="tier-form">
+					<p style="color: var(--text-secondary); margin-bottom: 1.25rem;" id="tier-modal-subtitle">
+						Update access level for user
+					</p>
+
+					<div class="form-group">
+						<label class="form-label" for="tier-select">Select Access Level</label>
+						<select id="tier-select" class="form-control">
+							<option value="1">Tier 1: Practice Administrator (Full Upload & User Control)</option>
+							<option value="2">Tier 2: Practice Staff (Document View & Download)</option>
+							<option value="3">Tier 3: Pending Authorization (No Access)</option>
+						</select>
+					</div>
+
+					<div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+						<button type="button" class="btn btn-secondary" id="tier-cancel-btn">Cancel</button>
+						<button type="submit" class="btn btn-primary">Save Role</button>
+					</div>
+				</form>
+			</div>
 		</div>
-		<script src="../globalBody.js" type="text/javascript"></script>
-		<script src="./manage-users.js" type="text/javascript"></script>
+
+		<!-- Reset Password Modal -->
+		<div class="modal-overlay" id="password-modal">
+			<div class="modal-box">
+				<div class="modal-header">
+					<h3 class="modal-title">Reset User Password</h3>
+					<button class="modal-close" id="password-modal-close">&times;</button>
+				</div>
+				<form id="password-form">
+					<p style="color: var(--text-secondary); margin-bottom: 1.25rem;" id="password-modal-subtitle">
+						Set a new secure password
+					</p>
+
+					<div class="form-group">
+						<label class="form-label" for="new-password-input">New Password</label>
+						<input
+							type="password"
+							id="new-password-input"
+							class="form-control"
+							placeholder="Minimum 6 characters"
+							required
+							minlength="6"
+						/>
+					</div>
+
+					<div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+						<button type="button" class="btn btn-secondary" id="password-cancel-btn">Cancel</button>
+						<button type="submit" class="btn btn-primary">Update Password</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<script src="../js/api.js"></script>
+		<script src="../js/nav.js"></script>
+		<script src="../js/modal.js"></script>
+		<script src="./manage-users.js"></script>
 	</body>
 </html>
