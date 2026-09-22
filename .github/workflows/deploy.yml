@@ -29,7 +29,10 @@ jobs:
       - name: Run Pytest Suite
         run: |
           cd Backend
-          pytest -v tests/
+          python -m pytest -v tests/
+        env:
+          PYTHONPATH: .
+
 
   deploy:
     name: Deploy to Production VPS
