@@ -36,6 +36,16 @@ def test_folder_creation_and_contents():
     folder_info = create_folder("", "Test_Unit_Folder")
     assert folder_info["name"] == "Test_Unit_Folder"
 
+    # Test creating subfolder inside another folder
+    subfolder_info = create_folder("Test_Unit_Folder", "Child_Folder")
+    assert subfolder_info["name"] == "Child_Folder"
+
+    from core.storage import get_all_folders_list
+    all_folders = get_all_folders_list()
+    paths = [f["path"] for f in all_folders]
+    assert "Test_Unit_Folder" in paths
+    assert "Test_Unit_Folder/Child_Folder" in paths
+
     contents = get_directory_contents("")
     folder_names = [f["name"] for f in contents["folders"]]
     assert "Test_Unit_Folder" in folder_names

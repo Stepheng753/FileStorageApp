@@ -4,6 +4,7 @@ from core.security import staff_or_admin_required, admin_required
 from core.storage import (
     get_directory_contents,
     get_full_folder_tree,
+    get_all_folders_list,
     save_uploaded_file,
     create_folder,
     delete_item,
@@ -17,6 +18,19 @@ def get_request_data():
     if request.is_json:
         return request.get_json() or {}
     return request.form.to_dict() if request.form else {}
+
+
+@files_bp.route("/folders", methods=["GET"])
+@staff_or_admin_required
+def list_all_folders():
+    """
+    Get flat list of all folders in the storage directory for selection dropdowns.
+    """
+    folders = get_all_folders_list()
+    return jsonify({
+        "success": True,
+        "folders": folders
+    }), 200
 
 
 @files_bp.route("/files", methods=["GET"])

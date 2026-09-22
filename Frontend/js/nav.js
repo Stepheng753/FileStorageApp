@@ -50,13 +50,23 @@ function renderNavbar(activePage = '') {
 		}
 
 		navHtml += `
-				<div class="user-pill">
-					<span>👤 ${escapeHtml(displayName)}</span>
-					<span class="role-badge ${tierClass}">${tierLabel}</span>
+				<div class="user-dropdown" id="user-dropdown">
+					<button class="user-pill-btn" id="user-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+						<span>👤 ${escapeHtml(displayName)}</span>
+						<span class="role-badge ${tierClass}">${tierLabel}</span>
+						<span class="user-caret">▼</span>
+					</button>
+					<div class="user-dropdown-menu" id="user-dropdown-menu">
+						<div class="user-dropdown-header">
+							<div class="user-dropdown-name">${escapeHtml(displayName)}</div>
+							<div class="user-dropdown-handle">@${escapeHtml(user.username)}</div>
+						</div>
+						<button class="user-dropdown-item" id="nav-signout-btn" type="button">
+							<span>🚪</span>
+							<span>Sign Out</span>
+						</button>
+					</div>
 				</div>
-				<button class="btn-header-link btn-header-signout" id="nav-signout-btn">
-					Sign Out
-				</button>
 		`;
 	} else {
 		navHtml += `
@@ -76,6 +86,24 @@ function renderNavbar(activePage = '') {
 	if (existingHeader) existingHeader.remove();
 
 	document.body.insertAdjacentHTML('afterbegin', navHtml);
+
+	// Setup Dropdown Toggle
+	const dropdown = document.getElementById('user-dropdown');
+	const toggleBtn = document.getElementById('user-dropdown-toggle');
+	if (dropdown && toggleBtn) {
+		toggleBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const isOpen = dropdown.classList.toggle('open');
+			toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+		});
+
+		document.addEventListener('click', (e) => {
+			if (!dropdown.contains(e.target)) {
+				dropdown.classList.remove('open');
+				toggleBtn.setAttribute('aria-expanded', 'false');
+			}
+		});
+	}
 
 	// Attach Signout Handler
 	const signoutBtn = document.getElementById('nav-signout-btn');

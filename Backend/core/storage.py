@@ -89,11 +89,18 @@ def resolve_safe_path(relative_path: str) -> Path:
 
 def create_folder(parent_path: str, folder_name: str) -> dict:
     """Create a new folder safely inside STORAGE_DIR."""
-    safe_folder_name = secure_filename(folder_name.strip()) or folder_name.strip().replace("/", "_").replace("\\", "_")
+    clean_parent = (parent_path or "").strip().strip("/\\")
+    clean_name = (folder_name or "").strip().strip("/\\")
+    if not clean_name:
+        raise ValueError("Invalid folder name")
+
+    # Replace path separators to prevent arbitrary sub-path injection in folder_name
+    safe_folder_name = clean_name.replace("/", "_").replace("\\", "_")
     if not safe_folder_name:
         raise ValueError("Invalid folder name")
 
-    target_dir = resolve_safe_path(os.path.join(parent_path, safe_folder_name))
+    rel = os.path.join(clean_parent, safe_folder_name) if clean_parent else safe_folder_name
+    target_dir = resolve_safe_path(rel)
     target_dir.mkdir(parents=True, exist_ok=True)
 
     rel_path = os.path.relpath(target_dir, STORAGE_DIR)
@@ -107,7 +114,8 @@ def create_folder(parent_path: str, folder_name: str) -> dict:
 
 def save_uploaded_file(target_folder: str, file_storage) -> dict:
     """Save an uploaded file safely into target_folder inside STORAGE_DIR."""
-    folder_path = resolve_safe_path(target_folder)
+    clean_folder = (target_folder or "").strip().strip("/\\")
+    folder_path = resolve_safe_path(clean_folder)
     folder_path.mkdir(parents=True, exist_ok=True)
 
     original_filename = file_storage.filename or "uploaded_file"
@@ -259,3 +267,35 @@ def get_full_folder_tree(path=None) -> dict:
         pass
 
     return folder_dict
+ 
+ 
+def get_all_folders_list(base_path=None) -> list:
+    """
+    Recursively get all directories in STORAGE_DIR as a flat list with clean display names.
+    Returns: [{"path": "", "name": "🏠 / (Root)"}, {"path": "401k ADP", "name": "📁 401k ADP"}, ...]
+    """
+    if base_path is None:
+        base_path = STORAGE_DIR
+
+    results = []
+    try:
+        for entry in os.scandir(base_path):
+            if entry.name.startswith("."):
+                continue
+            if entry.is_dir():
+                rel = os.path.relpath(entry.path, STORAGE_DIR)
+                display_parts = Path(rel).parts
+                display_name = " / ".join(display_parts)
+                results.append({
+                    "path": rel,
+                    "name": f"📁 {display_name}"
+                })
+                # Recurse into subdirectories
+                results.extend(get_all_folders_list(entry.path))
+    except Exception:
+        pass
+
+    if base_path == STORAGE_DIR:
+        results.sort(key=lambda x: x["path"].lower())
+        return [{"path": "", "name": "🏠 / (Root)"}] + results
+    return results

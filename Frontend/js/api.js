@@ -159,6 +159,10 @@ const api = {
 	},
 
 	// --- File & Folder Endpoints ---
+	async getAllFolders() {
+		return await this.request('/folders');
+	},
+
 	async getFiles(folder = '') {
 		const param = folder ? `?folder=${encodeURIComponent(folder)}` : '';
 		return await this.request(`/files${param}`);

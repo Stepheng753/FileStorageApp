@@ -248,36 +248,93 @@ function initAdminActions() {
 		};
 	}
 
-	// 2. Create Folder
+	// 2. Create Folder Button
 	const newFolderBtn = document.getElementById('dock-newfolder-btn');
 	if (newFolderBtn) {
 		newFolderBtn.onclick = async () => {
-			const folderName = await modal.prompt({
-				title: 'Create New Folder',
-				placeholder: 'e.g. Consent Forms 2026',
-				confirmText: 'Create Folder',
-			});
-			if (folderName) {
-				try {
-					await api.createFolder(currentFolder, folderName);
-					api.toast(`Created folder '${folderName}'`, 'success');
-					loadFolder(currentFolder);
-				} catch (e) {}
-			}
+			await populateFolderSelect('folder-parent-select', currentFolder);
+			const nameInput = document.getElementById('folder-name-input');
+			if (nameInput) nameInput.value = '';
+			modal.open('folder-modal');
+			setTimeout(() => {
+				if (nameInput) nameInput.focus();
+			}, 80);
 		};
 	}
+
+	initFolderModal();
 
 	// 3. Upload Files Button
 	const uploadBtn = document.getElementById('dock-upload-btn');
 	if (uploadBtn) {
-		uploadBtn.onclick = () => {
-			const targetInput = document.getElementById('target-folder-input');
-			if (targetInput) {
-				targetInput.value = currentFolder ? `/${currentFolder}` : '/ (Root)';
-			}
+		uploadBtn.onclick = async () => {
+			await populateFolderSelect('target-folder-select', currentFolder);
 			selectedFilesForUpload = [];
 			renderSelectedFiles();
 			modal.open('upload-modal');
+		};
+	}
+}
+
+async function populateFolderSelect(selectId, selectedValue = '') {
+	const select = document.getElementById(selectId);
+	if (!select) return;
+
+	try {
+		const res = await api.getAllFolders();
+		const folders = res.folders || [];
+		select.innerHTML = '';
+		folders.forEach((f) => {
+			const opt = document.createElement('option');
+			opt.value = f.path;
+			opt.textContent = f.name;
+			if (f.path === selectedValue) {
+				opt.selected = true;
+			}
+			select.appendChild(opt);
+		});
+	} catch (err) {
+		select.innerHTML = `<option value="">🏠 / (Root)</option>`;
+	}
+}
+
+function initFolderModal() {
+	const modalClose = document.getElementById('folder-modal-close');
+	const cancelBtn = document.getElementById('folder-cancel-btn');
+	const folderForm = document.getElementById('folder-form');
+	const submitBtn = document.getElementById('folder-submit-btn');
+
+	if (modalClose) modalClose.onclick = () => modal.close('folder-modal');
+	if (cancelBtn) cancelBtn.onclick = () => modal.close('folder-modal');
+
+	if (folderForm) {
+		folderForm.onsubmit = async (e) => {
+			e.preventDefault();
+			const parentSelect = document.getElementById('folder-parent-select');
+			const nameInput = document.getElementById('folder-name-input');
+
+			const parentFolder = parentSelect ? parentSelect.value : currentFolder;
+			const folderName = nameInput ? nameInput.value.trim() : '';
+
+			if (!folderName) {
+				api.toast('Please enter a folder name.', 'error');
+				return;
+			}
+
+			submitBtn.disabled = true;
+			submitBtn.innerHTML = 'Creating...';
+
+			try {
+				await api.createFolder(parentFolder, folderName);
+				api.toast(`Created folder '${folderName}' successfully!`, 'success');
+				modal.close('folder-modal');
+				if (nameInput) nameInput.value = '';
+				loadFolder(parentFolder || currentFolder);
+			} catch (err) {
+			} finally {
+				submitBtn.disabled = false;
+				submitBtn.innerHTML = 'Create Folder';
+			}
 		};
 	}
 }
@@ -328,16 +385,19 @@ function initUploadModal() {
 				return;
 			}
 
+			const targetSelect = document.getElementById('target-folder-select');
+			const destinationFolder = targetSelect ? targetSelect.value : currentFolder;
+
 			submitBtn.disabled = true;
 			submitBtn.innerHTML = 'Uploading...';
 
 			try {
-				await api.uploadFiles(currentFolder, selectedFilesForUpload);
+				await api.uploadFiles(destinationFolder, selectedFilesForUpload);
 				api.toast(`Uploaded ${selectedFilesForUpload.length} document(s) successfully!`, 'success');
 				modal.close('upload-modal');
 				selectedFilesForUpload = [];
 				filePicker.value = '';
-				loadFolder(currentFolder);
+				loadFolder(destinationFolder || currentFolder);
 			} catch (err) {
 			} finally {
 				submitBtn.disabled = false;

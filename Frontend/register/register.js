@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			card.innerHTML = `
 				<div style="text-align: center; padding: 1rem 0;">
 					<div style="font-size: 3.5rem; margin-bottom: 1rem;">🎉</div>
-					<h2 class="auth-title" style="font-size: 2.1rem; margin-bottom: 0.75rem;">Account Requested!</h2>
+					<h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary);">Account Requested!</h2>
 					<p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.5;">
 						Your account <strong>${escapeHtml(res.user.username)}</strong> has been registered.
 						An administrator has been notified to activate your document access privileges.
