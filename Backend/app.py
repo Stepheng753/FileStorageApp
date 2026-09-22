@@ -32,7 +32,23 @@ def create_app() -> Flask:
         app.config["SERVER_NAME"] = SERVER_NAME
 
     # Enable CORS
-    CORS(app, origins=CORS_ORIGINS, supports_credentials=True)
+    # Automatically ensure all toothmanager domains (with/without www, http/https) are permitted
+    import re
+    base_origins = list(CORS_ORIGINS) if isinstance(CORS_ORIGINS, (list, tuple)) else [CORS_ORIGINS]
+    extra_origins = [
+        "https://toothmanager.com",
+        "http://toothmanager.com",
+        "https://www.toothmanager.com",
+        "http://www.toothmanager.com",
+        "https://dev.toothmanager.com",
+        "http://dev.toothmanager.com",
+        re.compile(r"^https?://([a-zA-Z0-9-]+\.)?toothmanager\.com(:[0-9]+)?$")
+    ]
+    for o in extra_origins:
+        if o not in base_origins and "*" not in base_origins:
+            base_origins.append(o)
+
+    CORS(app, origins=base_origins, supports_credentials=True)
 
     # Initialize Database and check for migrations
     init_db()
