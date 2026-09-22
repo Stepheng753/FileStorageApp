@@ -32,8 +32,9 @@ def list_files():
     if view == "tree":
         return jsonify(get_full_folder_tree()), 200
 
-    folder = request.args.get("folder", "").strip()
+    folder = request.args.get("folder", "").strip().lstrip("/\\")
     try:
+
         data = get_directory_contents(folder)
         return jsonify({"success": True, "data": data}), 200
     except FileNotFoundError as e:
@@ -151,8 +152,9 @@ def download_file():
     - path: relative file path inside STORAGE_DIR
     - download: 'true' to force attachment download, 'false' for in-browser view
     """
-    path = request.args.get("path", "").strip()
+    path = request.args.get("path", "").strip().lstrip("/\\")
     as_attachment = request.args.get("download", "false").lower() == "true"
+
 
     if not path:
         return jsonify({"success": False, "error": "File path is required"}), 400

@@ -59,11 +59,21 @@ def resolve_safe_path(relative_path: str) -> Path:
     """
     Resolve a user-provided relative path against STORAGE_DIR.
     Ensures that the resolved path is strictly contained within STORAGE_DIR.
-    Raises ValueError if path traversal is detected.
+    Raises ValueError if path traversal or absolute path is detected.
     """
-    cleaned = relative_path.strip().lstrip("/\\")
-    # Disallow absolute paths or parent directory traversal components
-    target = (STORAGE_DIR / cleaned).resolve()
+    raw = relative_path.strip()
+    if not raw:
+        return STORAGE_DIR.resolve()
+
+    if raw.startswith("/") or raw.startswith("\\") or os.path.isabs(raw):
+        raise ValueError("Absolute paths are not permitted")
+
+    # Check for parent traversal in path parts
+    parts = Path(raw).parts
+    if ".." in parts:
+        raise ValueError("Parent directory traversal (..) is not permitted")
+
+    target = (STORAGE_DIR / raw).resolve()
     storage_root = STORAGE_DIR.resolve()
 
     try:
@@ -74,6 +84,7 @@ def resolve_safe_path(relative_path: str) -> Path:
         raise ValueError(f"Invalid path: {e}")
 
     return target
+
 
 
 def create_folder(parent_path: str, folder_name: str) -> dict:
