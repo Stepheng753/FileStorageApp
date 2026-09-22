@@ -4,7 +4,7 @@
 
 const API_BASE = (function () {
 	if (window.location.origin.includes('toothmanager.com')) {
-		return window.location.origin + '/api';
+		return 'https://dev.toothmanager.com/api';
 	}
 	// Fallback to local dev API
 	return 'http://localhost:3001/api';
@@ -12,7 +12,7 @@ const API_BASE = (function () {
 
 const STATIC_BASE = (function () {
 	if (window.location.origin.includes('toothmanager.com')) {
-		return window.location.origin + '/static';
+		return 'https://dev.toothmanager.com/static';
 	}
 	return 'http://localhost:3001/static';
 })();
@@ -106,7 +106,15 @@ const api = {
 				throw new Error('Session expired');
 			}
 
-			const data = await res.json();
+			let data;
+			const contentType = res.headers.get('content-type') || '';
+			if (contentType.includes('application/json')) {
+				data = await res.json();
+			} else {
+				const text = await res.text();
+				data = { error: `Server error (${res.status}): ${text.substring(0, 100)}` };
+			}
+
 			if (!res.ok) {
 				const errMsg = data.error || data.message || `Request failed (${res.status})`;
 				throw new Error(errMsg);
