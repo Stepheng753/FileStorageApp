@@ -2,8 +2,35 @@ import os
 import shutil
 from datetime import datetime
 from pathlib import Path
-from werkzeug.utils import secure_filename
 from core.config import STORAGE_DIR
+
+# Document and media formats that may be uploaded
+ALLOWED_EXTENSIONS = {"pdf", "docx", "doc", "xlsx", "xls", "pptx", "ppt", "png", "jpg", "jpeg", "txt", "csv"}
+
+# Executable, script and system extensions. Checked against every dot-separated
+# suffix so names such as "report.php.pdf" are also refused.
+BLOCKED_EXTENSIONS = {
+    "sh", "bash", "zsh", "py", "pyc", "elf", "bin", "exe", "dll", "so", "msi", "bat", "cmd",
+    "ps1", "vbs", "com", "scr", "jar", "php", "phtml", "cgi", "pl", "rb", "js", "mjs",
+    "service", "timer", "cron", "sys",
+}
+
+# Leading magic bytes expected for each binary format. Text formats are checked for NUL bytes instead.
+MAGIC_SIGNATURES = {
+    "pdf": (b"%PDF-",),
+    "png": (b"\x89PNG\r\n\x1a\n",),
+    "jpg": (b"\xff\xd8\xff",),
+    "jpeg": (b"\xff\xd8\xff",),
+    # OOXML containers are ZIP archives
+    "docx": (b"PK\x03\x04",),
+    "xlsx": (b"PK\x03\x04",),
+    "pptx": (b"PK\x03\x04",),
+    # Legacy Office documents use OLE2 compound files
+    "doc": (b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1",),
+    "xls": (b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1",),
+    "ppt": (b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1",),
+}
+TEXT_EXTENSIONS = {"txt", "csv"}
 
 # Extension category mapping for frontend icons and previews
 CATEGORY_MAP = {
@@ -87,21 +114,92 @@ def resolve_safe_path(relative_path: str) -> Path:
 
 
 
+def clean_relative_path(raw: str) -> str:
+    """
+    Normalise a user-supplied relative path before it reaches the filesystem.
+    Removes null bytes, leading/trailing slashes and '.'/'..' navigation segments.
+    Names are otherwise left exactly as the user supplied them.
+    """
+    raw = str(raw or "").replace("\x00", "").strip().replace("\\", "/")
+    parts = [p for p in raw.split("/") if p not in ("", ".", "..")]
+    return "/".join(parts)
+
+
+def validate_upload_filename(raw_name: str) -> str:
+    """
+    Check an uploaded file name against the extension policy and return it unchanged.
+    The name is only trimmed to its final path component to remove directory parts.
+    """
+    name = (raw_name or "").replace("\x00", "").replace("\\", "/").rsplit("/", 1)[-1]
+    if not name or name in (".", ".."):
+        raise ValueError("Invalid file name")
+    if name.startswith("."):
+        raise ValueError("Dotfiles cannot be uploaded")
+
+    suffixes = [s.lower() for s in name.split(".")[1:]]
+    if any(s in BLOCKED_EXTENSIONS for s in suffixes):
+        raise ValueError("Executable and script files cannot be uploaded")
+
+    ext = suffixes[-1] if suffixes else ""
+    if ext not in ALLOWED_EXTENSIONS:
+        raise ValueError(f"File type '.{ext}' is not permitted")
+    return name
+
+
+def validate_upload_content(file_storage, ext: str) -> None:
+    """
+    Verify the file's leading bytes match its extension, then rewind the stream.
+    Text formats must not contain NUL bytes.
+    """
+    stream = file_storage.stream
+    stream.seek(0)
+    try:
+        if ext in TEXT_EXTENSIONS:
+            while chunk := stream.read(64 * 1024):
+                if b"\x00" in chunk:
+                    raise ValueError(f"File content does not match its '.{ext}' type")
+            return
+
+        signatures = MAGIC_SIGNATURES.get(ext)
+        if signatures is None:
+            raise ValueError(f"File type '.{ext}' is not permitted")
+        head = stream.read(8)
+        if not any(head.startswith(sig) for sig in signatures):
+            raise ValueError(f"File content does not match its '.{ext}' type")
+    finally:
+        stream.seek(0)
+
+
+def _make_dirs_secure(path: Path) -> None:
+    """Create a directory and any missing parents, setting 0o755 on each new directory."""
+    missing = []
+    current = path
+    while not current.exists():
+        missing.append(current)
+        current = current.parent
+    for directory in reversed(missing):
+        try:
+            directory.mkdir()
+        except FileExistsError:
+            continue  # created concurrently by another request
+        os.chmod(directory, 0o755)
+    if not path.is_dir():
+        raise ValueError("Path exists and is not a folder")
+
+
 def create_folder(parent_path: str, folder_name: str) -> dict:
     """Create a new folder safely inside STORAGE_DIR."""
-    clean_parent = (parent_path or "").strip().strip("/\\")
-    clean_name = (folder_name or "").strip().strip("/\\")
-    if not clean_name:
-        raise ValueError("Invalid folder name")
+    clean_parent = clean_relative_path(parent_path)
+    clean_name = (folder_name or "").replace("\x00", "").strip()
 
     # Replace path separators to prevent arbitrary sub-path injection in folder_name
     safe_folder_name = clean_name.replace("/", "_").replace("\\", "_")
-    if not safe_folder_name:
+    if not safe_folder_name or safe_folder_name in (".", "..") or safe_folder_name.startswith("."):
         raise ValueError("Invalid folder name")
 
     rel = os.path.join(clean_parent, safe_folder_name) if clean_parent else safe_folder_name
     target_dir = resolve_safe_path(rel)
-    target_dir.mkdir(parents=True, exist_ok=True)
+    _make_dirs_secure(target_dir)
 
     rel_path = os.path.relpath(target_dir, STORAGE_DIR)
     return {
@@ -113,20 +211,21 @@ def create_folder(parent_path: str, folder_name: str) -> dict:
 
 
 def save_uploaded_file(target_folder: str, file_storage) -> dict:
-    """Save an uploaded file safely into target_folder inside STORAGE_DIR."""
-    clean_folder = (target_folder or "").strip().strip("/\\")
+    """Validate and save an uploaded file safely into target_folder inside STORAGE_DIR."""
+    clean_folder = clean_relative_path(target_folder)
+
+    # Validate the name and content before any directory is created or file written
+    safe_name = validate_upload_filename(file_storage.filename)
+    ext = safe_name.rsplit(".", 1)[-1].lower()
+    validate_upload_content(file_storage, ext)
+
     folder_path = resolve_safe_path(clean_folder)
-    folder_path.mkdir(parents=True, exist_ok=True)
+    _make_dirs_secure(folder_path)
 
-    original_filename = file_storage.filename or "uploaded_file"
-    # Keep filename readable while removing unsafe characters
-    base_name = os.path.basename(original_filename).replace("\x00", "")
-    safe_name = secure_filename(base_name)
-    if not safe_name:
-        safe_name = "file_" + str(int(datetime.now().timestamp()))
-
-    dest_file = folder_path / safe_name
+    # Resolve the final destination and confine it to STORAGE_DIR (also catches symlink escapes)
+    dest_file = resolve_safe_path(os.path.join(clean_folder, safe_name) if clean_folder else safe_name)
     file_storage.save(str(dest_file))
+    os.chmod(dest_file, 0o644)
 
     stat = dest_file.stat()
     rel_path = os.path.relpath(dest_file, STORAGE_DIR)

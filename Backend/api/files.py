@@ -1,4 +1,3 @@
-import os
 from flask import Blueprint, request, jsonify, send_file
 from core.security import staff_or_admin_required, admin_required
 from core.storage import (
@@ -8,7 +7,8 @@ from core.storage import (
     save_uploaded_file,
     create_folder,
     delete_item,
-    resolve_safe_path
+    resolve_safe_path,
+    clean_relative_path
 )
 
 files_bp = Blueprint("files", __name__)
@@ -46,7 +46,7 @@ def list_files():
     if view == "tree":
         return jsonify(get_full_folder_tree()), 200
 
-    folder = request.args.get("folder", "").strip().lstrip("/\\")
+    folder = clean_relative_path(request.args.get("folder", ""))
     try:
 
         data = get_directory_contents(folder)
@@ -68,9 +68,7 @@ def upload_files():
     - folder: target directory relative path
     - file: single file or multiple files
     """
-    folder = request.form.get("folder", "").strip()
-    # Strip any leading dots or slashes
-    cleaned_folder = folder.lstrip("./\\")
+    cleaned_folder = clean_relative_path(request.form.get("folder", ""))
 
     uploaded = []
     files = request.files.getlist("file")
@@ -104,8 +102,8 @@ def add_folder():
     - folder_name: name of the new folder
     """
     data = get_request_data()
-    parent = data.get("parent_folder", "").strip().lstrip("./\\")
-    name = data.get("folder_name", "").strip()
+    parent = clean_relative_path(data.get("parent_folder", ""))
+    name = str(data.get("folder_name", "") or "").strip()
 
     if not name:
         return jsonify({"success": False, "error": "Folder name is required"}), 400
@@ -133,15 +131,12 @@ def remove_item():
     - OR folder + file combination (for legacy compatibility)
     """
     data = get_request_data()
-    path = data.get("path", "").strip()
+    path = clean_relative_path(data.get("path", ""))
 
     if not path:
-        folder = data.get("folder", "").strip().lstrip("./\\")
-        file_name = data.get("file", "").strip()
-        if file_name:
-            path = os.path.join(folder, file_name)
-        else:
-            path = folder
+        folder = clean_relative_path(data.get("folder", ""))
+        file_name = clean_relative_path(data.get("file", ""))
+        path = "/".join(part for part in (folder, file_name) if part)
 
     if not path:
         return jsonify({"success": False, "error": "Path to delete is required"}), 400
@@ -166,7 +161,7 @@ def download_file():
     - path: relative file path inside STORAGE_DIR
     - download: 'true' to force attachment download, 'false' for in-browser view
     """
-    path = request.args.get("path", "").strip().lstrip("/\\")
+    path = clean_relative_path(request.args.get("path", ""))
     as_attachment = request.args.get("download", "false").lower() == "true"
 
 

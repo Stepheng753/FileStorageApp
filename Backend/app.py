@@ -4,16 +4,16 @@ Tooth Manager - Backend Application
 Provides RESTful API for authentication, file storage management, and user administration.
 """
 
-from flask import Flask, jsonify, send_from_directory, request, redirect
+from flask import Flask, jsonify, request, redirect
 from flask_cors import CORS
 from core.config import (
     SECRET_KEY,
     SERVER_NAME,
-    STORAGE_DIR,
     CORS_ORIGINS,
     MAX_CONTENT_LENGTH,
     PORT
 )
+from core.security import staff_or_admin_required
 from database.db import init_db, auto_migrate_plaintext_passwords
 from api.health import health_bp
 from api.auth import auth_bp
@@ -23,7 +23,8 @@ from api.docs import docs_bp, get_docs
 
 
 def create_app() -> Flask:
-    app = Flask(__name__, static_folder=str(STORAGE_DIR))
+    # No static_folder: uploaded documents are only reachable through the authenticated /api/files/download route
+    app = Flask(__name__)
 
     # App configuration
     app.config["SECRET_KEY"] = SECRET_KEY
@@ -65,11 +66,6 @@ def create_app() -> Flask:
     @app.route("/docs", methods=["GET"])
     def serve_swagger_docs():
         return get_docs()
-
-    # Static file serving route (especially useful for local development and Nginx fallback)
-    @app.route("/static/<path:filename>")
-    def serve_static(filename):
-        return send_from_directory(str(STORAGE_DIR), filename)
 
     # Root index / ping
     @app.route("/", methods=["GET"])
@@ -119,6 +115,7 @@ def create_app() -> Flask:
         return api_register()
 
     @app.route("/download_files", methods=["GET", "POST"])
+    @staff_or_admin_required
     def legacy_download_files():
         from core.storage import get_full_folder_tree
         return jsonify(get_full_folder_tree())

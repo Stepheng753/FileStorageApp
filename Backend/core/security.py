@@ -79,11 +79,15 @@ def decode_token(token: str) -> dict:
 
 
 def get_token_from_request():
-    """Extract Bearer token from Authorization header or 'token' query param."""
+    """
+    Extract Bearer token from Authorization header or 'token' query param.
+    The form body is deliberately not read here: parsing a multipart upload before
+    authentication would buffer the whole payload for unauthenticated callers.
+    """
     auth_header = request.headers.get("Authorization", "")
     if auth_header.startswith("Bearer "):
         return auth_header[7:].strip()
-    return request.args.get("token") or request.form.get("token")
+    return request.args.get("token")
 
 
 def token_required(f):
