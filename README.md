@@ -62,9 +62,10 @@ All uploaded documents and practice folders reside on the server filesystem at:
 ```
 
 - **Storage Location**: Controlled via `STORAGE_DIR` in `Backend/core/config.py` (configured in `Backend/secrets.json`).
-- **High Performance Delivery**: In production, Nginx serves `/static/` directly from disk with caching and zero Gunicorn overhead.
+- **Access Control**: Documents are never served as static files. They are only reachable through the authenticated `/api/files/download` endpoint.
 - **Data Protection**: In `.gitignore`, `Backend/static/*` is strictly ignored to ensure deployments **never overwrite or delete existing client documents**.
-- **Path Traversal Guards**: Filenames are sanitized with `secure_filename`, and directory paths are validated against `STORAGE_DIR` boundaries to prevent traversal attacks (`../../`).
+- **Upload Guards**: Original filenames are kept intact. Uploads must use an allowed extension (`pdf`, `docx`, `doc`, `xlsx`, `xls`, `pptx`, `ppt`, `png`, `jpg`, `jpeg`, `txt`, `csv`), and file contents must match that type. Executable, script, and dotfile names are refused.
+- **Path Traversal Guards**: Directory paths are normalised and validated against `STORAGE_DIR` boundaries to prevent traversal attacks (`../../`), including symlink escapes.
 
 ---
 

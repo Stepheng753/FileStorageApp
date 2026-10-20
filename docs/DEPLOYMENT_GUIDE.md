@@ -32,11 +32,8 @@ server {
 
     client_max_body_size 1G;
 
-    # Serve static files directly from the filesystem for high speed
-    location /static/ {
-        alias /home/stepheng753/FileStorageApp/Backend/static/;
-        try_files $uri $uri/ =404;
-    }
+    # Do NOT add a location block that serves the storage directory. Uploaded documents
+    # are only reachable through the authenticated /api/files/download endpoint.
 
     # Proxy all API requests and application routes to Gunicorn Unix socket
     location / {

@@ -185,8 +185,10 @@ Uploads one or multiple files into a practice folder.
 
 * **Authentication**: Tier 1 (Admin)
 * **Request Format**: `multipart/form-data`
-  - `folder` *(text)*: Destination folder path (e.g. `401k ADP`)
+  - `folder` *(text)*: Destination folder path (e.g. `401k ADP`). Empty or omitted uploads to the storage root.
   - `file` *(file or array of files)*: The uploaded file binary payloads
+* **Accepted types**: `pdf, docx, doc, xlsx, xls, pptx, ppt, png, jpg, jpeg, txt, csv`. File contents must match the extension (for example, a `.pdf` must begin with `%PDF-`). Filenames are stored exactly as sent.
+* **Errors (400)**: a disallowed or executable extension, a dotfile name, or content that does not match its type. Files processed earlier in the same request remain saved.
 * **Response (201 Created)**:
 ```json
 {
@@ -207,9 +209,10 @@ Uploads one or multiple files into a practice folder.
 ---
 
 ### `POST /files/folder`
-Creates a new directory inside storage.
+Creates a new directory inside storage. New directories are created with mode `0755`.
 
 * **Authentication**: Tier 1 (Admin)
+* **Errors (400)**: names that start with `.`, or that are `.` or `..`
 * **Request Body**:
 ```json
 {
@@ -230,6 +233,18 @@ Creates a new directory inside storage.
   }
 }
 ```
+
+---
+
+### `GET /files/download`
+Streams a stored file. The frontend uses this for viewing and downloading.
+
+* **Authentication**: Tier 1 or 2 (Staff). Send `Authorization: Bearer <token>`, or pass `token` as a query parameter.
+* **Query Parameters**:
+  - `path` *(text)*: File path relative to storage root (e.g. `401k ADP/Policy_Update_2026.pdf`)
+  - `download` *(optional)*: `true` to send as an attachment, otherwise served inline
+* **Response (200 OK)**: the file bytes with the matching `Content-Type`.
+* **Errors**: 401 with no or invalid token, 403 for pending accounts, 404 if the file does not exist.
 
 ---
 
