@@ -10,13 +10,6 @@ const API_BASE = (function () {
 	return 'http://localhost:3001/api';
 })();
 
-const STATIC_BASE = (function () {
-	if (window.location.origin.includes('toothmanager.com')) {
-		return 'https://dev.toothmanager.com/static';
-	}
-	return 'http://localhost:3001/static';
-})();
-
 
 const api = {
 	// --- Session Management ---
@@ -197,8 +190,30 @@ const api = {
 		});
 	},
 
-	getFileDownloadUrl(path, download = false) {
-		return `${STATIC_BASE}/${path.replace(/^\/+/, '')}`;
+	// Fetches a stored file through the authenticated download endpoint and returns a Blob.
+	// Plain links cannot send the Bearer header, so files are loaded with fetch instead.
+	async getFileBlob(path, asAttachment = false) {
+		const params = new URLSearchParams({ path, download: String(asAttachment) });
+		const headers = {};
+		const token = this.getToken();
+		if (token) {
+			headers['Authorization'] = `Bearer ${token}`;
+		}
+
+		const res = await fetch(`${API_BASE}/files/download?${params}`, { headers });
+		if (res.status === 401) {
+			this.clearSession();
+			this.toast('Session expired. Please log in again.', 'error');
+			setTimeout(() => {
+				window.location.href = this.getRelativePath('login/login.html');
+			}, 1200);
+			throw new Error('Session expired');
+		}
+		if (!res.ok) {
+			const data = await res.json().catch(() => ({}));
+			throw new Error(data.error || `Request failed (${res.status})`);
+		}
+		return await res.blob();
 	},
 
 	// --- User Administration Endpoints ---

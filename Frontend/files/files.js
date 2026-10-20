@@ -202,20 +202,33 @@ function renderGrid(folders = [], files = []) {
 	});
 }
 
-function handleOpenFile(file) {
-	const viewableExts = ['.pdf', '.html', '.htm', '.txt', '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.mp4', '.webm', '.mp3'];
+async function handleOpenFile(file) {
+	// HTML is not viewable inline: legacy HTML files would run scripts on the app's origin
+	const viewableExts = ['.pdf', '.txt', '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.mp4', '.webm', '.mp3'];
 	const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
-	const fileUrl = api.getFileDownloadUrl(file.path);
+	const isViewable = viewableExts.includes(ext);
 
-	if (viewableExts.includes(ext)) {
-		window.open(fileUrl, '_blank');
-	} else {
-		const link = document.createElement('a');
-		link.href = fileUrl;
-		link.download = file.name;
-		document.body.appendChild(link);
-		link.click();
-		link.remove();
+	// Open the viewer tab synchronously so the browser does not treat it as a blocked popup
+	const viewWindow = isViewable ? window.open('', '_blank') : null;
+	try {
+		const blob = await api.getFileBlob(file.path, !isViewable);
+		const url = URL.createObjectURL(blob);
+		if (viewWindow) {
+			viewWindow.location.href = url;
+		} else {
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = file.name;
+			document.body.appendChild(link);
+			link.click();
+			link.remove();
+		}
+		setTimeout(() => URL.revokeObjectURL(url), 60000);
+	} catch (err) {
+		if (viewWindow) viewWindow.close();
+		if (err.message !== 'Session expired') {
+			api.toast(err.message, 'error');
+		}
 	}
 }
 

@@ -17,16 +17,18 @@ function uploadFormEventHandler() {
 			formData.append('file', file);
 		}
 
+		const token = localStorage.getItem('tm_token');
 		fetch(backendUrl + '/upload_file', {
 			method: 'POST',
+			headers: token ? { Authorization: `Bearer ${token}` } : {},
 			body: formData,
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				if (data.STATUS == 'SUCCESS') {
+				if (data.success) {
 					redirect('../../files/files.html');
 				} else {
-					alert('Error:' + data.ERROR);
+					alert('Error: ' + data.error);
 				}
 			});
 	});
