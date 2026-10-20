@@ -7,7 +7,6 @@ Provides RESTful API for authentication, file storage management, and user admin
 from flask import Flask, jsonify, request, redirect
 from flask_cors import CORS
 from core.config import (
-    SECRET_KEY,
     SERVER_NAME,
     CORS_ORIGINS,
     MAX_CONTENT_LENGTH,
@@ -27,7 +26,6 @@ def create_app() -> Flask:
     app = Flask(__name__)
 
     # App configuration
-    app.config["SECRET_KEY"] = SECRET_KEY
     app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH
     if SERVER_NAME:
         app.config["SERVER_NAME"] = SERVER_NAME

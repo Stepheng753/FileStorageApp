@@ -129,7 +129,6 @@ Create the production configuration on the server at `/home/stepheng753/FileStor
 
 ```json
 {
-  "SECRET_KEY": "PROD_SECURE_RANDOM_KEY_HERE",
   "JWT_SECRET_KEY": "PROD_JWT_SIGNING_KEY_HERE",
   "JWT_EXPIRES_HOURS": 24,
   "SERVER_NAME": null,

@@ -23,7 +23,6 @@ elif EXAMPLE_FILE.exists():
     except Exception:
         pass
 
-SECRET_KEY = config_data.get("SECRET_KEY", "fallback-secret-key-replace-in-production")
 JWT_SECRET_KEY = config_data.get("JWT_SECRET_KEY", "fallback-jwt-key-replace-in-production")
 JWT_EXPIRES_HOURS = int(config_data.get("JWT_EXPIRES_HOURS", 24))
 SERVER_NAME = config_data.get("SERVER_NAME", None)
